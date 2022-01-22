@@ -1,3 +1,3 @@
 - D2 == if문
 - D3 == for문
-
+- D4 == while문
