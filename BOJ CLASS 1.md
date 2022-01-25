@@ -3,6 +3,8 @@
 ## 1) [1008. A/B](https://www.acmicpc.net/problem/1008)
 
 ```python
+A, B = map(int, input().split())
+print(A / B)
 ```
 
 
@@ -207,6 +209,21 @@ while 1:
 ## 16) [1152. 단어의 개수](https://www.acmicpc.net/problem/1152)
 
 ```python
+input_str = input()
+modified_str = input_str.title()
+result = 0
+for char in modified_str:
+    if 65 <= ord(char) <= 90:
+         result += 1
+print(result) # 미친 짓인듯
+```
+
+
+
+```python
+# 인터넷 검색 후
+word = input().split()
+print(len(word))
 ```
 
 
@@ -295,6 +312,13 @@ for i in range(10):
 ## 19) [2675. 문자열 반복](https://www.acmicpc.net/problem/2675)
 
 ```python
+T = int(input())
+for test_case in range(1, T + 1):
+    R, S = input().split()
+    result = ''
+    for char in S:
+        result += char * int(R)
+    print(result)
 ```
 
 
@@ -302,6 +326,11 @@ for i in range(10):
 ## 20) [2908. 상수](https://www.acmicpc.net/problem/2908)
 
 ```python
+A, B = input().split()
+if int(A[::-1]) > int(B[::-1]):
+    print(A[::-1])
+else:
+    print(B[::-1])
 ```
 
 
@@ -309,6 +338,13 @@ for i in range(10):
 ## 21) [2920. 음계](https://www.acmicpc.net/problem/2920)
 
 ```python
+note = list(map(int, input().split()))
+if note == [1, 2, 3, 4, 5, 6, 7, 8]:
+    print('ascending')
+elif note == [8, 7, 6, 5, 4, 3, 2, 1]:
+    print('descending')
+else:
+    print('mixed')
 ```
 
 
@@ -354,27 +390,44 @@ for test_case in range(1, T + 1):
 ## 24) [10809. 알파벳 찾기](https://www.acmicpc.net/problem/10809)
 
 ```python
+S = input()
+for i in range(97, 123):
+    print(S.find(chr(i)),end=' ')
 ```
-
-
 
 
 
 ## 25) [11720. 숫자의 합](https://www.acmicpc.net/problem/11720)
 
 ```python
+N = int(input())
+num = input()
+result = 0
+for i in range(N):
+    result += int(num[i])
+print(result)
 ```
-
-
 
 
 
 ## 26) [1157. 단어 공부](https://www.acmicpc.net/problem/1157)
 
 ```python
+word = input()
+u_word = word.upper()
+count_list = []
+for i in range(65,91):
+    count_list.append(u_word.count(chr(i)))
+most_used = []
+for i in range(26):
+    if count_list[i] == max(count_list):
+        most_used.append(chr(i + 65))
+
+if len(most_used) == 1:
+    print(most_used[0])
+else:
+    print('?')
 ```
-
-
 
 
 
@@ -388,4 +441,3 @@ for score in subjects:
     sum_score += (score/max(subjects)*100)
 print(sum_score/N)
 ```
-
