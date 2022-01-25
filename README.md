@@ -1,4 +1,6 @@
-- D2 == if문
-- D3 == for문
-- D4 == while문
-- D5 == 1차원 배열
+[Baekjoon Online Judge](https://www.acmicpc.net/) Problems Solving by Python.
+
+Referred to the guideline via [solved.ac](solved.ac).
+
+In the case of CLASS 1, solved problems without Bronze V.
+
