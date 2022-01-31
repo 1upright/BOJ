@@ -103,3 +103,60 @@ for i in range(T):
     print(k_floor_people[n - 1])
 ```
 
+
+
+## 7) [2789. 블랙잭](https://www.acmicpc.net/problem/2798)
+
+```python
+N, M = map(int, input().split())
+cards = list(map(int, input().split()))
+under_M = []
+for i in range(N):
+    for j in range(i+1, N):
+        for k in range(j+1, N):
+            if cards[i] + cards[j] + cards[k] > M:
+                continue
+            else:
+                under_M.append(cards[i] + cards[j] + cards[k])
+print(max(under_M))
+```
+
+
+
+## 8) [15929. Hashing](https://www.acmicpc.net/problem/15829)
+
+```python
+# 50점
+L = int(input())
+alp_str = input()
+hash_val = 0
+for i in range(L):
+    hash_val += (ord(alp_str[i]) - 96) * (31 ** i)
+print(hash_val)
+
+# 100점
+L = int(input())
+alp_str = input()
+hash_val = 0
+for i in range(L):
+    hash_val += (ord(alp_str[i]) - 96) * (31 ** i)
+print(hash_val % 1234567891)
+```
+
+
+
+## 9) [1259. 팰린드롬수](https://www.acmicpc.net/problem/1259)
+
+```python
+while 1:
+    num = int(input())
+    if num == 0:
+        break
+    result = 'yes'
+    for i in range(len(str(num)) // 2):
+        if str(num)[i] != str(num)[-i-1]:
+            result = 'no'
+            continue
+    print(result)
+```
+
