@@ -160,3 +160,69 @@ while 1:
     print(result)
 ```
 
+
+
+## 10) [2839. 설탕 배달](https://www.acmicpc.net/problem/2839)
+
+```python
+# 실패 - 범위 날먹
+N = int(input())
+num_list = []
+try:
+    for i in range(1, 1001):
+        for j in range(1, 1668):
+                if 5 * i + 3 * j == N:
+                    num_list.append(i + j)
+    num_list.sort()
+    print(num_list[0])
+except IndexError:
+    print(-1)
+    
+# 성공
+N = int(input())
+count = 0
+while N >= 0:
+    if N % 5 == 0:
+        count += N // 5
+        print(count)
+        break
+    N -= 3
+    count += 1
+else: # while문이 거짓이 될 경우
+    print(-1)
+```
+
+
+
+## 11) [2869. 달팽이는 올라가고 싶다](acmicpc.net/problem/2869)
+
+```python
+# 시간 초과
+A, B, V = map(int, input().split())
+day_count = 0
+height = 0
+while height < V:
+    day_count += 1
+    height += A
+    if height >= V:
+        print(day_count)
+        break
+    height -= Bay_count = 0
+
+# 정답
+A, B, V = map(int, input().split())
+from math import ceil
+print(ceil((V - A) / (A - B)) + 1)
+
+```
+
+
+
+## 12) [이항 계수 1](https://www.acmicpc.net/problem/11050)
+
+```python
+N, K = map(int, input().split())
+from math import factorial
+print(int(factorial(N) / factorial(K) / factorial(N - K)))
+```
+
