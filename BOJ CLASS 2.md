@@ -218,11 +218,92 @@ print(ceil((V - A) / (A - B)) + 1)
 
 
 
-## 12) [이항 계수 1](https://www.acmicpc.net/problem/11050)
+## 12) [11050. 이항 계수 1](https://www.acmicpc.net/problem/11050)
 
 ```python
 N, K = map(int, input().split())
 from math import factorial
 print(int(factorial(N) / factorial(K) / factorial(N - K)))
+```
+
+
+
+## 13) [1018. 체스판 다시 칠하기](https://www.acmicpc.net/problem/1018)
+
+```python
+M, N = map(int, input().split())
+arr = [list(input()) for _ in range(M)]
+cnts = []
+for i in range(M-7):
+    for j in range(N-7):
+        cnt1 = 0
+        cnt2 = 0
+        for k in range(i, i+8):
+            for l in range(j, j+8):
+                if (k+l)%2:
+                    if arr[k][l] != 'B':
+                        cnt1 += 1
+                    if arr[k][l] != 'W':
+                        cnt2 += 1
+                else:
+                    if arr[k][l] != 'W':
+                        cnt1 += 1
+                    if arr[k][l] != 'B':
+                        cnt2 += 1
+        cnts.append(cnt1)
+        cnts.append(cnt2)
+
+print(min(cnts))
+```
+
+
+
+## 14) [1181. 단어 정렬](https://www.acmicpc.net/problem/1181)
+
+```python
+# 시간 초과
+N = int(input())
+words = []
+for _ in range(N):
+    words.append(input())
+word_lst = list(set(words))
+for i in range(len(word_lst)):
+    for j in range(i+1, len(word_lst)):
+        if len(word_lst[i]) > len(word_lst[j]):
+            word_lst[i], word_lst[j] = word_lst[j], word_lst[i]
+        if len(word_lst[i]) == len(word_lst[j]):
+            if word_lst[i] > word_lst[j]:
+                word_lst[i], word_lst[j] = word_lst[j], word_lst[i]
+
+print(word_lst)
+
+
+# 다시 풀어봄 - 정답 => 튜플을 정리하는거였음
+N = int(input())
+words = []
+for _ in range(N):
+    words.append(input())
+word_lst = list(set(words))
+
+sorted_words = []
+for word in word_lst:
+    sorted_words.append((len(word), word))
+sorted_words.sort()
+
+for a, b in sorted_words:
+    print(b)
+    
+# 인터넷에서 본 다른 풀이
+n = int(input())
+
+words = []
+for _ in range(n):
+    word = input()
+    if word not in words:
+        words.append(word)
+
+words = sorted(words, key = lambda x : (len(x), x))
+for word in words:
+    print(word)
 ```
 
