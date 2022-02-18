@@ -307,3 +307,303 @@ for word in words:
     print(word)
 ```
 
+
+
+## 15) [1436. 영화감독 숌](https://www.acmicpc.net/problem/1436)
+
+``` python
+N = int(input())
+key = 666
+cnt = 1
+while cnt != N:
+    key += 1
+    if '666' in str(key):
+        cnt += 1
+print(key)
+```
+
+
+
+## 16) [2609. 최대공약수와 최소공배수](https://www.acmicpc.net/problem/2609)
+
+```python
+# 첫 풀이
+a, b = map(int, input().split())
+for i in range(1, min(a,b)+1):
+    if not a%i and not b%i:
+        key = i
+print(key)
+print(a*b//key)
+
+## 인터넷 도움 받은 유클리드 호제법
+a, b = map(int, input().split())
+l = [a, b]
+while b > 0:
+    a, b = b, a % b
+print(a)
+print(l[0]*l[1]//a)
+```
+
+
+
+## 17) [2751. 수 정렬하기](https://www.acmicpc.net/problem/2751)
+
+```python
+# 굉장히 오래걸림 => pypy3 사용시 어느정도 커버 가능
+N = int(input())
+nums = []
+for _ in range(N):
+    nums.append(int(input()))
+for i in sorted(nums):
+    print(i)
+     
+# 찾아보니 고급 정렬(병합 정렬, 퀵 정렬, 힙 정렬)을 이용해야 한다고 함 
+```
+
+
+
+## 18) [7568. 덩치](https://www.acmicpc.net/problem/7568)
+
+```python
+# 처음 했던 짓) 정렬하고 등수 동일화시키기! (오답)
+# 두 명이 몸무게나 키가 서로 같을 경우를 설명 못해서 틀린듯
+N = int(input())
+bw = []
+h = []
+rank = [0]*N
+
+for i in range(N):
+    a, b = map(int, input().split())
+    bw.append([i,a])
+    h.append([i,b])
+
+bw_list = sorted(bw, key = lambda x: x[1], reverse=True)
+for i in range(N):
+    bw_list[i].append(i+1)
+
+
+h_list = []
+for i in range(N):
+    h_list.append(h[bw_list[i][0]])
+
+for i in range(N-1):
+    if h_list[i][1] < h_list[i+1][1]:
+        bw_list[i+1][2] = bw_list[i][2]
+
+for i in range(N):
+    rank[bw_list[i][0]] = bw_list[i][2]
+
+print(*rank)
+
+### 아이디어) 나보다 덩치가 큰 사람의 수 + 1 == 등수일 것!
+N = int(input())
+ppl = []
+rank = [0]*N
+for _ in range(N):
+    ppl.append(list(map(int, input().split())))
+for i in range(N):
+    cnt = 1
+    for j in range(N):
+        if ppl[i][0] < ppl[j][0] and ppl[i][1] < ppl[j][1]:
+            cnt += 1
+    rank[i] = cnt
+print(*rank)
+```
+
+
+
+## 19) [10814. 나이순 정렬](https://www.acmicpc.net/problem/10814)
+
+```python
+```
+
+
+
+## 20) [10989. 수 정렬하기 3](https://www.acmicpc.net/problem/10989)
+
+```python
+```
+
+
+
+## 21) [11650. 좌표 정렬하기](https://www.acmicpc.net/problem/11650)
+
+```python
+```
+
+
+
+## 22) [11651. 좌표 정렬하기 2](https://www.acmicpc.net/problem/11651)
+
+```python
+```
+
+
+
+## 23) [1920. 수 찾기](https://www.acmicpc.net/problem/1920)
+
+```python
+```
+
+
+
+## 24) [1978. 소수 찾기](https://www.acmicpc.net/problem/1978)
+
+```python
+```
+
+
+
+## 25) [2108. 통계학](https://www.acmicpc.net/problem/2108)
+
+```python
+```
+
+
+
+## 26) [2164. 카드2](https://www.acmicpc.net/problem/2164)
+
+```python
+```
+
+
+
+## 27) [4949. 균형잡힌 세상](https://www.acmicpc.net/problem/4949)
+
+```python
+```
+
+
+
+## 28) [9012. 괄호](https://www.acmicpc.net/problem/9012)
+
+```python
+```
+
+
+
+## 29) [10773. 제로](https://www.acmicpc.net/problem/10773)
+
+```python
+```
+
+
+
+## 30) [10816. 숫자 카드 2](https://www.acmicpc.net/problem/10816)
+
+```python
+```
+
+
+
+## 31) [10828. 스택](https://www.acmicpc.net/problem/10828)
+
+```python
+```
+
+
+
+## 32) [10845. 큐](https://www.acmicpc.net/problem/10845)
+
+```python
+```
+
+
+
+## 33) [10866. 덱](https://www.acmicpc.net/problem/10866)
+
+```python
+```
+
+
+
+## 34) [11866. 요세푸스 문제 0](https://www.acmicpc.net/problem/11866)
+
+```python
+```
+
+
+
+## 35) [1654. 랜선 자르기](https://www.acmicpc.net/problem/1654)
+
+```python
+```
+
+
+
+## 36) [1874. 스택 수열](https://www.acmicpc.net/problem/1874)
+
+```python
+```
+
+
+
+## 37) [1966. 프린터 큐](https://www.acmicpc.net/problem/1966)
+
+```python
+```
+
+
+
+## 38) [2805. 나무 자르기](https://www.acmicpc.net/problem/2805)
+
+```python
+```
+
+
+
+## 39) [1929. 소수 구하기](https://www.acmicpc.net/problem/1929)
+
+```python
+# 시간 초과 - 최대한 줄인다고 i//2까지만 세도록 했는데도..
+M, N = map(int, input().split())
+for i in range(M, N+1):
+    cnt = 2
+    while 1:
+        if i % cnt == 0:
+            break
+        cnt += 1
+        if cnt >= i//2:
+            print(i)
+            break
+
+# 시간 초과 - 돌리는 크기를 i**0.5+1까지로 줄여봤는데도..
+M, N = map(int, input().split())
+for i in range(M, N+1):
+    cnt = 2
+    while 1:
+        if not i%cnt:
+            break
+        cnt += 1
+        if cnt >= int(i**0.5)+1:
+            print(i)
+            break
+
+# (오답) for 안의 while-break는 안되고 for안의 for-break는 돌아가나봄
+# 근데 M,N에 1이 들어갈 수 있었음
+M, N = map(int, input().split())
+for i in range(M, N+1):
+    for j in range(2, int(i**0.5)+1):
+        if not i%j:
+            break
+    else:
+        print(i)
+        
+# 정답
+M, N = map(int, input().split())
+for i in range(M, N+1):
+    if i == 1:
+        continue
+    for j in range(2, int(i**0.5)+1):
+        if not i%j:
+            break
+    else:
+        print(i)
+```
+
+
+
+## 40) [18111. 마인크래프트](https://www.acmicpc.net/problem/18111)
+```python
+```
+
