@@ -415,6 +415,15 @@ print(*rank)
 ## 19) [10814. 나이순 정렬](https://www.acmicpc.net/problem/10814)
 
 ```python
+# 실행 시간 길긴 함
+N = int(input())
+member = []
+for i in range(N):
+    age, name = map(str, input().split())
+    member.append([int(age), i, name])
+member.sort()
+for i in range(N):
+    print(f'{member[i][0]} {member[i][2]}')
 ```
 
 
@@ -422,6 +431,7 @@ print(*rank)
 ## 20) [10989. 수 정렬하기 3](https://www.acmicpc.net/problem/10989)
 
 ```python
+#
 ```
 
 
@@ -429,6 +439,15 @@ print(*rank)
 ## 21) [11650. 좌표 정렬하기](https://www.acmicpc.net/problem/11650)
 
 ```python
+# 실행 시간 길긴 함
+N = int(input())
+spot = []
+for i in range(N):
+    x, y = map(int, input().split())
+    spot.append((x, y))
+spot.sort()
+for i in range(N):
+    print(f'{spot[i][0]} {spot[i][1]}')
 ```
 
 
@@ -436,6 +455,25 @@ print(*rank)
 ## 22) [11651. 좌표 정렬하기 2](https://www.acmicpc.net/problem/11651)
 
 ```python
+# 실행 시간 길긴 함
+N = int(input())
+spot = []
+for i in range(N):
+    x, y = map(int, input().split())
+    spot.append((y, x))
+spot.sort()
+for i in range(N):
+    print(f'{spot[i][1]} {spot[i][0]}')
+
+# 혹은
+N = int(input())
+spot = []
+for i in range(N):
+    x, y = map(int, input().split())
+    spot.append((x, y))
+spot = sorted(spot, key = lambda x : x[1])
+for i in range(N):
+    print(f'{spot[i][1]} {spot[i][0]}')
 ```
 
 
@@ -443,6 +481,7 @@ print(*rank)
 ## 23) [1920. 수 찾기](https://www.acmicpc.net/problem/1920)
 
 ```python
+#
 ```
 
 
@@ -450,6 +489,19 @@ print(*rank)
 ## 24) [1978. 소수 찾기](https://www.acmicpc.net/problem/1978)
 
 ```python
+# 소수 구하기를 먼저 했어서 쉽게 넘김
+N = int(input())
+nums = list(map(int, input().split()))
+cnt = 0
+for num in nums:
+    if num == 1:
+        continue
+    for i in range(2, int(num**0.5)+1):
+        if not num%i:
+            break
+    else:
+        cnt += 1
+print(cnt)
 ```
 
 
@@ -457,6 +509,7 @@ print(*rank)
 ## 25) [2108. 통계학](https://www.acmicpc.net/problem/2108)
 
 ```python
+#
 ```
 
 
