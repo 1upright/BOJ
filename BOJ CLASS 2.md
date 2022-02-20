@@ -517,6 +517,19 @@ print(cnt)
 ## 26) [2164. 카드2](https://www.acmicpc.net/problem/2164)
 
 ```python
+# 역시나 시간 초과
+N = int(input())
+nums = list(range(1, N+1))
+while len(nums) > 1:
+    for i in range(len(nums)):
+        if not i%2:
+            nums[i] = 0
+    for num in nums:
+        if not num:
+            nums.remove(num)
+print(nums[0])
+
+# 덱
 ```
 
 
