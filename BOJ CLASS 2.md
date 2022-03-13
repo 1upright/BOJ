@@ -537,6 +537,33 @@ print(nums[0])
 ## 27) [4949. 균형잡힌 세상](https://www.acmicpc.net/problem/4949)
 
 ```python
+def check(s):
+    stack = []
+    for x in s:
+        if x == '[' or x == '(':
+            stack.append(x)
+        elif x == ')':
+            if not stack:
+                return 'no'
+            if stack[-1] == '[':
+                return 'no'
+            stack.pop(-1)
+        elif x == ']':
+            if not stack:
+                return 'no'
+            if stack[-1] == '(':
+                return 'no'
+            stack.pop(-1)
+    if stack:
+        return 'no'
+    return 'yes'
+
+while 1:
+    sent = input()
+    if sent == '.':
+        break
+    else:
+        print(check(sent))
 ```
 
 
@@ -544,6 +571,24 @@ print(nums[0])
 ## 28) [9012. 괄호](https://www.acmicpc.net/problem/9012)
 
 ```python
+def c(s):
+    st = []
+    for x in s:
+        if x == '(':
+            st.append(x)
+        if x == ')':
+            if not st:
+                return 'NO'
+            st.pop(-1)
+    if st:
+        return 'NO'
+    return 'YES'
+
+for _ in range(int(input())):
+    print(c(input()))
+    
+## 인터넷을 통해 찾은 숏코딩
+exec(("print(['NO','YES'][not input()"+".replace('()','')"*25+"]);")*int(input()))
 ```
 
 
@@ -551,6 +596,32 @@ print(nums[0])
 ## 29) [10773. 제로](https://www.acmicpc.net/problem/10773)
 
 ```python
+# 시간 초과
+K = int(input())
+s = []
+for _ in range(K):
+    n = int(input())
+    if n:
+        s.append(n)
+    else:
+        s.pop(-1)
+print(sum(s))
+
+# 정답
+K = int(input())
+res = 0
+top = -1
+s = [0]*K
+for _ in range(K):
+    n = int(input())
+    if n:
+        res += n
+        top += 1
+        s[top] = n
+    else:
+        res -= s[top]
+        top -= 1
+print(res)
 ```
 
 
@@ -558,6 +629,14 @@ print(nums[0])
 ## 30) [10816. 숫자 카드 2](https://www.acmicpc.net/problem/10816)
 
 ```python
+# 시간 초과
+N = int(input())
+a = list(map(int, input().split()))
+M = int(input())
+for b in list(map(int, input().split())):
+    print(a.count(b), end=' ')
+   
+#
 ```
 
 
@@ -565,6 +644,79 @@ print(nums[0])
 ## 31) [10828. 스택](https://www.acmicpc.net/problem/10828)
 
 ```python
+# 시간 초과
+N = int(input())
+s = []
+for _ in range(N):
+    com = input()
+    if com == 'pop':
+        if s:
+            print(s.pop())
+        else:
+            print(-1)
+    elif com == 'size':
+        print(len(s))
+    elif com == 'empty':
+        print((int(bool(s))-1)*(-1))
+    elif com == 'top':
+        if s:
+            print(s[-1])
+        else:
+            print(-1)
+    else:
+        s.append(com[5:])
+       
+# 이것도 시간초과
+N = int(input())
+s = [0]*N
+top = -1
+for _ in range(N):
+    c = input()
+    if c == 'pop':
+        if top == -1:
+            print(-1)
+        else:
+            print(s[top])
+            top -= 1
+    elif c == 'size':
+        print(top+1)
+    elif c == 'empty':
+        if top == -1:
+            print(1)
+        else:
+            print(0)
+    elif c == 'top':
+        if top == -1:
+            print(-1)
+        else:
+            print(s[top])
+    else:
+        top += 1
+        s[top] = c[5:]
+        
+        
+# 억까인듯
+import sys
+N = int(sys.stdin.readline())
+s = []
+for _ in range(N):
+    com = list(sys.stdin.readline().split())
+    if com[0] == 'push':
+        s.append(com[1])
+    if com[0] == 'pop':
+        if s:
+            print(s.pop())
+        else:
+            print(-1)
+    if com[0] == 'size':
+        print(len(s))
+    if com[0] == 'empty':
+        print((int(bool(s))-1)*(-1))
+    if com[0] == 'top':
+        if s:
+            print(s[-1])
+        else:
+            print(-1)
 ```
 
 
