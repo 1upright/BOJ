@@ -724,6 +724,32 @@ for _ in range(N):
 ## 32) [10845. 큐](https://www.acmicpc.net/problem/10845)
 
 ```python
+import sys
+N = int(sys.stdin.readline())
+s = []
+for _ in range(N):
+    com = list(sys.stdin.readline().split())
+    if com[0] == 'push':
+        s.append(com[1])
+    if com[0] == 'pop':
+        if s:
+            print(s.pop(0))
+        else:
+            print(-1)
+    if com[0] == 'size':
+        print(len(s))
+    if com[0] == 'empty':
+        print((int(bool(s))-1)*(-1))
+    if com[0] == 'front':
+        if s:
+            print(s[0])
+        else:
+            print(-1)
+    if com[0] == 'back':
+        if s:
+            print(s[-1])
+        else:
+            print(-1)
 ```
 
 
@@ -731,6 +757,7 @@ for _ in range(N):
 ## 33) [10866. 덱](https://www.acmicpc.net/problem/10866)
 
 ```python
+#
 ```
 
 
@@ -738,6 +765,21 @@ for _ in range(N):
 ## 34) [11866. 요세푸스 문제 0](https://www.acmicpc.net/problem/11866)
 
 ```python
+N, K = map(int, input().split())
+ppl = list(range(1, N+1))
+i = 1
+print('<', end='')
+while ppl:
+    i = (i-1+K) % N
+    if not i:
+        i += N
+    if len(ppl) == 1:
+        print(ppl.pop(i-1), end='')
+    else:
+        print(ppl.pop(i-1), end=', ')
+        N -= 1
+print('>')
+# 원래는 덱 문제인듯?
 ```
 
 
@@ -745,6 +787,20 @@ for _ in range(N):
 ## 35) [1654. 랜선 자르기](https://www.acmicpc.net/problem/1654)
 
 ```python
+K, N = map(int, input().split())
+lines = [int(input()) for _ in range(K)]
+start, end = 1, max(lines)
+
+while start <= end:
+    mid = (start+end)//2
+    cnt = 0
+    for line in lines:
+        cnt += line//mid
+    if cnt >= N:
+        start = mid + 1
+    else:
+        end = mid - 1
+print(end)
 ```
 
 
