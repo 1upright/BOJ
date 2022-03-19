@@ -808,6 +808,56 @@ print(end)
 ## 36) [1874. 스택 수열](https://www.acmicpc.net/problem/1874)
 
 ```python
+# 시간초과
+n = int(input())
+nums = list(range(1, n+1))
+s = []
+res = ''
+
+for _ in range(n):
+    num = int(input())
+    if s and s[-1] == num:
+        res += '-'
+        s.pop()
+    elif num in s:
+        res = 'NO'
+        break
+    else:
+        while nums[0] != num:
+            s.append(nums.pop(0))
+            res += '+'
+        nums.pop(0)
+        res += '+-'
+
+if res == 'NO':
+    print(res)
+else:
+    for x in res:
+        print(x)
+
+# 정답
+n = int(input())
+record = 0
+s = []
+res = ''
+for _ in range(n):
+    num = int(input())
+    if record < num:
+        res += '+'*(num-record) + '-'
+        s += list(range(record+1, num))
+        record = num
+    else:
+        if s[-1] == num:
+            s.pop()
+            res += '-'
+        else:
+            res = 'NO'
+            break
+if res == 'NO':
+    print(res)
+else:
+    for x in res:
+        print(x)
 ```
 
 
@@ -815,6 +865,26 @@ print(end)
 ## 37) [1966. 프린터 큐](https://www.acmicpc.net/problem/1966)
 
 ```python
+def check():
+    cnt = 1
+    while 1:
+        if arr[0] == max(arr):
+            if idx[0] == M:
+                return cnt
+            else:
+                arr.pop(0)
+                idx.pop(0)
+                cnt += 1
+        else:
+            arr.append(arr.pop(0))
+            idx.append(idx.pop(0))
+
+T = int(input())
+for tc in range(T):
+    N, M = map(int, input().split())
+    arr = list(map(int, input().split()))
+    idx = list(range(N))
+    print(check())
 ```
 
 
@@ -822,6 +892,23 @@ print(end)
 ## 38) [2805. 나무 자르기](https://www.acmicpc.net/problem/2805)
 
 ```python
+import sys
+
+N, M = map(int, sys.stdin.readline().split())
+trees = list(map(int, sys.stdin.readline().split()))
+start = 0
+end = max(trees)
+while start <= end:
+    mid = (start + end) // 2
+    cnt = 0
+    for x in trees:
+        if x > mid:
+            cnt += x - mid
+    if cnt >= M:
+        start = mid + 1
+    else:
+        end = mid - 1
+print(end)
 ```
 
 
@@ -879,5 +966,64 @@ for i in range(M, N+1):
 
 ## 40) [18111. 마인크래프트](https://www.acmicpc.net/problem/18111)
 ```python
+# 시간초과
+N, M, B = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(N)]
+s = 256
+e = 0
+for i in range(N):
+    for j in range(M):
+        if arr[i][j] < s:
+            s = arr[i][j]
+        if arr[i][j] > e:
+            e = arr[i][j]
+
+min_time = 256*N*M*2
+for x in range(s, e+1):
+    time = 0
+    block = B
+    for i in range(N):
+        for j in range(M):
+            if arr[i][j] > x:
+                time += 2*(arr[i][j]-x)
+                block += arr[i][j]-x
+            elif arr[i][j] < x:
+                time += x-arr[i][j]
+                block -= x-arr[i][j]
+    if min_time > time and block>=0:
+        min_time = time
+        min_x = x
+print(min_time, min_x)
+# 억지
+import sys
+N, M, B = map(int, sys.stdin.readline().split())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+s = 256
+e = 0
+for i in range(N):
+    for j in range(M):
+        if arr[i][j] < s:
+            s = arr[i][j]
+        if arr[i][j] > e:
+            e = arr[i][j]
+
+min_time = 256*N*M*2
+for x in range(s, e+1):
+    ovr = 0
+    undr = 0
+    for i in range(N):
+        for j in range(M):
+            h = arr[i][j] - x
+            if h>0:
+                ovr += h
+            elif h<0:
+                undr += h
+    if B + undr + ovr < 0:
+        continue
+    time = ovr*2 - undr
+    if min_time >= time:
+        min_time = time
+        min_x = x
+print(min_time, min_x)
 ```
 
