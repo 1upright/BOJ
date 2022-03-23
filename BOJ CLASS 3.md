@@ -383,7 +383,7 @@ print(cnt)
 
 ```python
 import sys
-N, M = map(int, input().split())
+N, M = map(int, sys.stdin.readline().split())
 a = list(map(int, sys.stdin.readline().split()))
 sums = [0]
 for i in range(N):
@@ -398,7 +398,12 @@ for _ in range(M):
 ## 18) [11726. 2xn 타일링](https://www.acmicpc.net/problem/11726)
 
 ```python
-
+N = int(input())
+s = [1]*(N+1)
+if N > 1:
+    for i in range(2,N+1):
+        s[i] = s[i-1] + s[i-2]
+print(s[N]%10007)
 ```
 
 
@@ -406,7 +411,12 @@ for _ in range(M):
 ## 19) [11727. 2xn 타일링 2](https://www.acmicpc.net/problem/11727)
 
 ```python
-
+N = int(input())
+s = [1]*(N+1)
+if N > 1:
+    for i in range(2,N+1):
+        s[i] = s[i-1] + 2*s[i-2]
+print(s[N]%10007)
 ```
 
 
@@ -414,7 +424,24 @@ for _ in range(M):
 ## 20) [1012. 유기농 배추](https://www.acmicpc.net/problem/1012)
 
 ```python
-
+T = int(input())
+for tc in range(1, T+1):
+    M, N, K = map(int, input().split())
+    cabb = []
+    cnt = 0
+    for _ in range(K):
+        i, j = map(int, input().split())
+        cabb.append([i, j])
+    while cabb:
+        q = [cabb.pop(0)]
+        while q:
+            i, j = q.pop(0)
+            for di, dj in [[0, 1], [0, -1], [1, 0], [-1, 0]]:
+                ni, nj = i+di, j+dj
+                if 0<=ni<M and 0<=nj<N and [ni, nj] in cabb:
+                    q.append(cabb.pop(cabb.index([ni, nj])))
+        cnt += 1
+    print(cnt)
 ```
 
 
@@ -422,7 +449,42 @@ for _ in range(M):
 ## 21) [1260. DFS와 BFS](https://www.acmicpc.net/problem/1260)
 
 ```python
+def dfs(N, V):
+    visited[V] = 1
+    print(V, end=' ')
+    for x in tree[V]:
+        if not visited[x]:
+            visited[x] = 1
+            dfs(N, x)
 
+def bfs(N, V):
+    q = []
+    visited[V] = 1
+    print(V, end=' ')
+    for x in tree[V]:
+        q.append(x)
+    while q:
+        i = q.pop(0)
+        if not visited[i]:
+            visited[i] = 1
+            print(i, end=' ')
+            for x in tree[i]:
+                q.append(x)
+
+N, M, V = map(int, input().split())
+tree = [[] for _ in range(N+1)]
+for _ in range(M):
+    i, j = map(int, input().split())
+    tree[i].append(j)
+    tree[j].append(i)
+for x in tree:
+    x.sort()
+
+visited = [0]*(N+1)
+dfs(N, V)
+print()
+visited = [0]*(N+1)
+bfs(N, V)
 ```
 
 
