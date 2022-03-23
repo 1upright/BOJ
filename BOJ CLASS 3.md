@@ -310,7 +310,24 @@ for _ in range(T):
 ## 13) [9375. 패션왕 신해빈](https://www.acmicpc.net/problem/9375)
 
 ```python
-
+T = int(input())
+for t in range(T):
+    N = int(input())
+    part = []
+    clothes = []
+    
+    for _ in range(N):
+        a, b = input().split()
+        if b in part:
+            clothes[part.index(b)].append(a)
+        else:
+            part.append(b)
+            clothes.append([a])
+    
+    res = 1
+    for i in range(len(clothes)):
+        res *= len(clothes[i])+1
+    print(res-1)
 ```
 
 
@@ -318,7 +335,16 @@ for _ in range(T):
 ## 14) [9461. 파도반 수열](https://www.acmicpc.net/problem/9461)
 
 ```python
-
+T = int(input())
+for t in range(T):
+    N = int(input())
+    pado = [0, 1, 1, 1, 2]
+    if N < 5:
+        print(pado[N])
+    else:
+        for i in range(5, N+1):
+            pado.append(pado[i-1]+pado[i-5])
+        print(pado[N])
 ```
 
 
@@ -326,7 +352,16 @@ for _ in range(T):
 ## 15) [11047. 동전 0](https://www.acmicpc.net/problem/11047)
 
 ```python
-
+N, K = map(int, input().split())
+s = []
+for _ in range(N):
+    s.append(int(input()))
+cnt = 0
+while s:
+    x = s.pop()
+    cnt += K//x
+    K -= K//x*x
+print(cnt)
 ```
 
 
@@ -334,7 +369,12 @@ for _ in range(T):
 ## 16) [11399. ATM](https://www.acmicpc.net/problem/11399)
 
 ```python
-
+N = int(input())
+l = sorted(list(map(int, input().split())))
+cnt = 0
+for i in range(N):
+    cnt += l[i]*(N-i)
+print(cnt)
 ```
 
 
@@ -342,7 +382,15 @@ for _ in range(T):
 ## 17) [11659. 구간 합 구하기 4](https://www.acmicpc.net/problem/11659)
 
 ```python
-
+import sys
+N, M = map(int, input().split())
+a = list(map(int, sys.stdin.readline().split()))
+sums = [0]
+for i in range(N):
+    sums.append(sums[i]+a[i])
+for _ in range(M):
+    i, j = map(int, sys.stdin.readline().split())
+    print(sums[j]-sums[i-1])
 ```
 
 
