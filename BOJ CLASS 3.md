@@ -492,7 +492,18 @@ bfs(N, V)
 ## 22) [1541. 잃어버린 괄호](https://www.acmicpc.net/problem/1541)
 
 ```python
-
+exp = input().split('-')
+for i in range(len(exp)):
+    if '+' in exp[i]:
+        nums = exp[i].split('+')
+        s = 0
+        for x in nums:
+            s += int(x)
+        exp[i] = s
+res = int(exp.pop(0))
+while exp:
+    res -= int(exp.pop(0))
+print(res)
 ```
 
 
@@ -500,7 +511,25 @@ bfs(N, V)
 ## 23) [1780. 종이의 개수](https://www.acmicpc.net/problem/1780)
 
 ```python
+def dfs(x, y, n):
+    num = arr[x][y]
+    for i in range(x, x+n):
+        for j in range(y, y+n):
+            if arr[i][j] != num:
+                for k in range(3):
+                    for l in range(3):
+                        dfs(n//3*k+x, n//3*l+y, n//3)
+                return
+    cnt[num+1] += 1
+    return
 
+N = int(input())
+arr = [list(map(int, input().split())) for _ in range(N)]
+v = [[0]*N for _ in range(N)]
+cnt = [0]*3
+dfs(0, 0, N)
+for x in cnt:
+    print(x)
 ```
 
 
