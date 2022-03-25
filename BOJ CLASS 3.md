@@ -537,7 +537,21 @@ for x in cnt:
 ## 24) [1927. 최소 힙](https://www.acmicpc.net/problem/1927)
 
 ```python
+# 인터넷 참고
+import sys, heapq
 
+N = int(sys.stdin.readline())
+heap = []
+for _ in range(N):
+    x = int(sys.stdin.readline())
+    last = 0
+    if not x:
+        if heap:
+            print(heapq.heappop(heap))
+        else:
+            print(0)
+    else:
+        heapq.heappush(heap, x)
 ```
 
 
@@ -545,7 +559,37 @@ for x in cnt:
 ## 25) [1931. 회의실 배정](https://www.acmicpc.net/problem/1931)
 
 ```python
+# 시간 초과 - 틀리기도 했을듯?
+N = int(input())
+conf = []
+for _ in range(N):
+    conf.append(list(map(int,input().split())))
+res = 0
+for i, j in conf:
+    v = [[i, j]]
+    for p, q in conf:
+        for r, s in v:
+            if p<s and q>r:
+                break
+        else:
+            v.append([p, q])
+    if res < len(v):
+        res = len(v)
+print(res)
 
+# 인터넷 참고
+N = int(input())
+conf = []
+for _ in range(N):
+    conf.append(list(map(int,input().split())))
+conf.sort(key = lambda x: (x[1],x[0]))
+
+e = cnt = 0
+for i,j in conf:
+    if i >= e:
+        e = j
+        cnt += 1
+print(cnt)
 ```
 
 
@@ -553,7 +597,41 @@ for x in cnt:
 ## 26) [5525. IOIOI](https://www.acmicpc.net/problem/5525)
 
 ```python
+# 시간 초과
+N, M = int(input()), int(input())
+S = input()
+v = [0]*(M-2)
+for i in range(M-2):
+    if S[i:i+3] == 'IOI':
+        v[i] = 1
+cnt = 0
+for i in range(M-2-N):
+    if v[i]:
+        c = 1
+        while c < N:
+            if v[i+2*c]:
+                c += 1
+            else:
+                break
+        else:
+            cnt += 1
+print(cnt)
 
+# 정답
+N, M = int(input()), int(input())
+S = input()
+i = cnt = res = 0
+while i<M-2:
+    if S[i:i+3] == 'IOI':
+        i += 2
+        cnt += 1
+        if cnt == N:
+            res += 1
+            cnt -= 1
+    else:
+        i += 1
+        cnt = 0
+print(res)
 ```
 
 
@@ -561,7 +639,20 @@ for x in cnt:
 ## 27) [11279. 최대 힙](https://www.acmicpc.net/problem/11279)
 
 ```python
+import sys, heapq
 
+N = int(sys.stdin.readline())
+heap = []
+for _ in range(N):
+    x = int(sys.stdin.readline())
+    last = 0
+    if not x:
+        if heap:
+            print(-heapq.heappop(heap))
+        else:
+            print(0)
+    else:
+        heapq.heappush(heap, -x)
 ```
 
 
@@ -569,7 +660,105 @@ for x in cnt:
 ## 28) [11724. 연결  요소의 개수](https://www.acmicpc.net/problem/11724)
 
 ```python
+# 시도 1(BFS) - 시간 초과
+import sys
 
+N, M = map(int, sys.stdin.readline().split())
+tree = [[] for _ in range(N+1)]
+for _ in range(M):
+    u, v = map(int, sys.stdin.readline().split())
+    tree[u].append(v)
+    tree[v].append(u)
+visited = [0]*(N+1)
+cnt = 0
+for i in range(N+1):
+    if tree[i]:
+        q = [i]
+        while q:
+            x = q.pop(0)
+            visited[x] = 1
+            for _ in range(len(tree[x])):
+                y = tree[x].pop(0)
+                if not visited[y]:
+                    q.append(y)
+        cnt += 1
+print(cnt)
+
+# 시도 2(DFS) - 오답
+import sys
+
+def dfs(v):
+    visited[v] = 1
+    for e in tree[v]:
+        if not visited[e]:
+            dfs(e)
+
+N, M = map(int, sys.stdin.readline().split())
+tree = [[] for _ in range(N+1)]
+for _ in range(M):
+    u, v = map(int, sys.stdin.readline().split())
+    tree[u].append(v)
+    tree[v].append(u)
+
+visited = [0]*(N+1)
+cnt = 0
+for i in range(N):
+    if not visited[i+1]:
+        cnt += 1
+        dfs(i+1)
+print(cnt)
+
+# 정답 - 시도1 수정
+import sys
+
+N, M = map(int, sys.stdin.readline().split())
+tree = [[] for _ in range(N+1)]
+visited = [0]*(N+1)
+cnt = 0
+
+for _ in range(M):
+    u, v = map(int, sys.stdin.readline().split())
+    tree[u].append(v)
+    tree[v].append(u)
+
+for i in range(1, N+1):
+    if not visited[i]:
+        q = [i]
+        while q:
+            x = q.pop(0)
+            for y in tree[x]:
+                if not visited[y]:
+                    q.append(y)
+                    visited[y]=1
+        cnt += 1
+print(cnt)
+
+# 정답 - 시도2 수정(인터넷 참고) - 좀 억까인듯
+import sys
+
+sys.setrecursionlimit(10000) # 달라진 점
+
+def dfs(v):
+    visited[v] = 1
+    for e in tree[v]:
+        if not visited[e]:
+            dfs(e)
+
+N, M = map(int, sys.stdin.readline().split())
+tree = [[] for _ in range(N+1)]
+visited = [0]*(N+1)
+cnt = 0
+
+for _ in range(M):
+    u, v = map(int, sys.stdin.readline().split())
+    tree[u].append(v)
+    tree[v].append(u)
+
+for i in range(N):
+    if not visited[i+1]:
+        cnt += 1
+        dfs(i+1)
+print(cnt)
 ```
 
 
