@@ -766,7 +766,30 @@ print(cnt)
 ## 29) [18870. 좌표 압축](https://www.acmicpc.net/problem/18870)
 
 ```python
+# 당연히 시간 초과
+N = int(input())
+nums = list(map(int, input().split()))
+cnts = []
+for i in nums:
+    cnt = 0
+    v = []
+    for j in nums:
+        if i > j and j not in v:
+            cnt += 1
+            v.append(j)
+    cnts.append(cnt)
+print(*cnts)
 
+# 정답
+import sys
+N = int(sys.stdin.readline())
+nums = list(map(int, sys.stdin.readline().split()))
+s_nums = sorted(list(set(nums)))
+dic = {}
+for i in range(len(s_nums)):
+    dic[s_nums[i]] = i
+for x in nums:
+    print(dic[x], end=' ')
 ```
 
 
@@ -774,7 +797,29 @@ print(cnt)
 ## 30) [1074. Z](https://www.acmicpc.net/problem/1074)
 
 ```python
+import sys
 
+def zfbin(v):
+    s = ''
+    for i in range(N-1, -1, -1):
+        s += '1' if v&(1<<i) else '0'
+    return s
+
+N, r, c = map(int, sys.stdin.readline().split())
+rs, cs = zfbin(r), zfbin(c)
+res = 0
+
+for k in range(N):
+    i, j = int(rs[k]), int(cs[k])
+    val = 2**((N-k-1)*2)
+    if not i and j:
+        res += val
+    elif i and not j:
+        res += val*2
+    elif i and j:
+        res += val*3
+
+print(res)
 ```
 
 
@@ -782,7 +827,37 @@ print(cnt)
 ## 31) [1389. 케빈 베이컨의 6단계 법칙](https://www.acmicpc.net/problem/1389)
 
 ```python
+import sys
 
+def dfs(v):
+    nxt = []
+    for x in tree[v]:
+        if not visited[x]:
+            visited[x] = visited[v] + 1
+            nxt.append(x)
+    for x in nxt:
+        dfs(x)
+    return
+
+N, M = map(int, sys.stdin.readline().split())
+tree = [[] for _ in range(N+1)]
+res = 10000
+
+for _ in range(M):
+    u, v = map(int, sys.stdin.readline().split())
+    tree[u].append(v)
+    tree[v].append(u)
+
+for i in range(1, N+1):
+    visited = [0]*(N+1)
+    visited[i] = 1
+    dfs(i)
+    bacon = sum(visited)
+    if res > bacon:
+        res = bacon
+        ans = i
+
+print(ans)
 ```
 
 
