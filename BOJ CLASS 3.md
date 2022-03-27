@@ -544,7 +544,6 @@ N = int(sys.stdin.readline())
 heap = []
 for _ in range(N):
     x = int(sys.stdin.readline())
-    last = 0
     if not x:
         if heap:
             print(heapq.heappop(heap))
@@ -645,7 +644,6 @@ N = int(sys.stdin.readline())
 heap = []
 for _ in range(N):
     x = int(sys.stdin.readline())
-    last = 0
     if not x:
         if heap:
             print(-heapq.heappop(heap))
@@ -865,7 +863,24 @@ print(ans)
 ## 32) [1697. 숨바꼭질](https://www.acmicpc.net/problem/1697)
 
 ```python
+def bfs(v):
+    q = [v]
+    while q:
+        x = q.pop(0)
+        for i in [x-1, x+1, x*2]:
+            if i == K:
+                return time[x]
+            if 0<=i<=100000 and not time[i]:
+                time[i] = time[x]+1
+                q.append(i)
 
+N, K = map(int, input().split())
+time = [0]*100001
+time[N] = 1
+if N == K:
+    print(0)
+else:
+    print(bfs(N))
 ```
 
 
@@ -873,7 +888,29 @@ print(ans)
 ## 33) [1992. 쿼드트리](https://www.acmicpc.net/problem/1992)
 
 ```python
+def dfs(i, j, n):
+    c = arr[i][j]
+    for a in range(i, i+n):
+        for b in range(j, j+n):
+            if arr[a][b] != c:
+                c = -1
+                break
 
+    if c == 0 or c == 1:
+        print(c, end='')
+
+    elif c == -1:
+        print('(', end='')
+        n //= 2
+        dfs(i, j, n)
+        dfs(i, j+n, n)
+        dfs(i+n, j, n)
+        dfs(i+n, j+n, n)
+        print(')', end='')
+
+N = int(input())
+arr = [list(map(int, input())) for _ in range(N)]
+dfs(0, 0, N)
 ```
 
 
@@ -881,7 +918,22 @@ print(ans)
 ## 34) [2178. 미로 탐색](https://www.acmicpc.net/problem/2178)
 
 ```python
+def bfs(i, j):
+    q = [(i, j)]
+    while q:
+        si, sj = q.pop(0)
+        for di, dj in [(1,0), (-1,0), (0, 1), (0, -1)]:
+            ni, nj = si+di, sj+dj
+            if 0<=ni<N and 0<=nj<M and arr[ni][nj] and not visited[ni][nj]:
+                visited[ni][nj] = visited[si][sj] + 1
+                q.append((ni, nj))
 
+N, M = map(int, input().split())
+arr = [list(map(int, input())) for _ in range(N)]
+visited =[[0]*M for _ in range(N)]
+visited[0][0] = 1
+bfs(0, 0)
+print(visited[N-1][M-1])
 ```
 
 
@@ -889,7 +941,34 @@ print(ans)
 ## 35) [2667. 단지번호붙이기](https://www.acmicpc.net/problem/2667)
 
 ```python
+def bfs(i, j):
+    cnt = 0
+    q = [(i, j)]
+    visited[i][j] = 1
+    while q:
+        si, sj = q.pop(0)
+        cnt += 1
+        for di, dj in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            ni, nj = si+di, sj+dj
+            if 0<=ni<N and 0<=nj<N and arr[ni][nj] and not visited[ni][nj]:
+                q.append((ni, nj))
+                visited[ni][nj] = 1
+    cnt_list.append(cnt)
 
+N = int(input())
+arr = [list(map(int, input())) for _ in range(N)]
+visited = [[0]*N for _ in range(N)]
+cnt_list = []
+res = 0
+for i in range(N):
+    for j in range(N):
+        if arr[i][j] and not visited[i][j]:
+            res += 1
+            bfs(i, j)
+
+print(res)
+for x in sorted(cnt_list):
+    print(x)
 ```
 
 
@@ -897,7 +976,15 @@ print(ans)
 ## 36) [6064. 카잉 달력](https://www.acmicpc.net/problem/6064)
 
 ```python
-
+for _ in range(int(input())):
+    M, N, x, y = map(int, input().split())
+    while x <= M*N:
+        if (x-y)%N == 0:
+            print(x)
+            break
+        x += M
+    else:
+        print(-1)
 ```
 
 
@@ -905,7 +992,19 @@ print(ans)
 ## 37) [11286. 절댓값 힙](https://www.acmicpc.net/problem/11286)
 
 ```python
+import sys, heapq
 
+N = int(sys.stdin.readline())
+heap = []
+for _ in range(N):
+    x = int(sys.stdin.readline())
+    if not x:
+        if heap:
+            print(heapq.heappop(heap)[1])
+        else:
+            print(0)
+    else:
+        heapq.heappush(heap, [abs(x), x])
 ```
 
 
@@ -913,7 +1012,15 @@ print(ans)
 ## 38) [11403. 경로 찾기](https://www.acmicpc.net/problem/11403)
 
 ```python
-
+# 인터넷 참고
+N = int(input())
+arr = [list(map(int, input().split())) for _ in range(N)]
+for k in range(N):
+    for i in range(N):
+        for j in range(N):
+            if arr[i][k] and arr[k][j]:
+                arr[i][j] = 1
+print(arr)
 ```
 
 
