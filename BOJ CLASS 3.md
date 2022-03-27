@@ -1020,7 +1020,8 @@ for k in range(N):
         for j in range(N):
             if arr[i][k] and arr[k][j]:
                 arr[i][j] = 1
-print(arr)
+for i in range(N):
+    print(*arr[i])
 ```
 
 
