@@ -1029,15 +1029,77 @@ for i in range(N):
 ## 39) [1107. 리모컨](https://www.acmicpc.net/problem/1107)
 
 ```python
+# 하루종일 한듯
+def dfs(i, l, num):
+    global cdd
+    if i == l:
+        if abs(int(cdd)-int(N))+len(cdd) > abs(int(num)-int(N))+len(str(int(num))):
+            cdd = num
+    else:
+        for j in yes:
+            dfs(i+1, l, num + str(j))
 
+N = input().strip()
+M = int(input())
+if M:
+    no = list(map(int, input().split()))
+    yes = list(set(list(range(10))) - set(no))
+    L = len(N)
+
+    if M == 10:
+        print(abs(int(N)-100))
+    else:
+        cdd = str(yes[0])*L
+        if int(N[0]) > yes[9-M]:
+            if 1 in yes:
+                cdd = '1' + str(yes[0])*L
+        dfs(0, L, '')
+
+        cdd2 = str(yes[0])*L
+        if L > 1:
+            cdd2 = str(yes[9-M])*(L-1)
+
+        print(min(abs(int(N)-100), abs(int(cdd)-int(N))+len(str(int(cdd))), abs(int(cdd2)-int(N))+len(cdd2)))
+else:
+    print(min(len(N), abs(100-int(N))))
 ```
+
+- 문제점 찾는 곳 : https://www.acmicpc.net/board/view/31853
+- 테스트케이스 다 되는데 틀려서 pypy로 해보니 정답;
 
 
 
 ## 40) [5430. AC](https://www.acmicpc.net/problem/5430)
 
 ```python
+def AC():
+    state = 1
+    for x in p:
+        if x == 'R':
+            state *= -1
+        else:
+            if not arr:
+                print('error')
+                return
+            else:
+                if state == 1:
+                    arr.pop(0)
+                else:
+                    arr.pop(-1)
+    if state == -1:
+        arr.reverse()
+    print('['+','.join(arr)+']')
 
+T = int(input())
+for tc in range(T):
+    p = input()
+    n = int(input())
+    a = input()
+    if a == '[]':
+        arr = []
+    else:
+        arr = list(a[1:len(a)-1].split(','))
+    AC()
 ```
 
 
