@@ -1107,7 +1107,107 @@ for tc in range(T):
 ## 41) [7576. 토마토](https://www.acmicpc.net/problem/7576)
 
 ```python
+# 시간 초과
+def bfs(N, M):
+    q = []
+    for i in range(N):
+        for j in range(M):
+            if arr[i][j] == 1:
+                q.append((i, j))
 
+    while q:
+        si, sj = q.pop(0)
+        for di, dj in [(1,0),(-1,0),(0,1),(0,-1)]:
+            ni, nj = si+di, sj+dj
+            if 0<=ni<N and 0<=nj<M and not arr[ni][nj]:
+                arr[ni][nj] = arr[si][sj] + 1
+                q.append((ni, nj))
+
+def check():
+    res = 0
+    for i in range(N):
+        for j in range(M):
+            if not arr[i][j]:
+                return -1
+            if res < arr[i][j]:
+                res = arr[i][j]
+    return res-1
+
+M, N = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(N)]
+bfs(N, M)
+print(check())
+
+# 해결 방법 1 - import deque
+import sys
+from collections import deque
+
+def bfs(N, M):
+    q = deque([])
+    for i in range(N):
+        for j in range(M):
+            if arr[i][j] == 1:
+                q.append((i, j))
+
+    while q:
+        si, sj = q.popleft()
+        for di, dj in [(1,0),(-1,0),(0,1),(0,-1)]:
+            ni, nj = si+di, sj+dj
+            if 0<=ni<N and 0<=nj<M and not arr[ni][nj]:
+                arr[ni][nj] = arr[si][sj] + 1
+                q.append((ni, nj))
+
+def check():
+    res = 0
+    for i in range(N):
+        for j in range(M):
+            if not arr[i][j]:
+                return -1
+            if res < arr[i][j]:
+                res = arr[i][j]
+    return res-1
+
+M, N = map(int, sys.stdin.readline().split())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+bfs(N, M)
+print(check())
+
+# 해결 방법 2 - front, rear(1번 방법이 조금 더 빠른듯)
+import sys
+
+def bfs(N, M):
+    q = [0]*(N*M)
+    front = rear = -1
+    for i in range(N):
+        for j in range(M):
+            if arr[i][j] == 1:
+                rear += 1
+                q[rear] = (i, j)
+
+    while front != rear:
+        front += 1
+        si, sj = q[front]
+        for di, dj in [(1,0),(-1,0),(0,1),(0,-1)]:
+            ni, nj = si+di, sj+dj
+            if 0<=ni<N and 0<=nj<M and not arr[ni][nj]:
+                arr[ni][nj] = arr[si][sj] + 1
+                rear += 1
+                q[rear] = (ni, nj)
+
+def check():
+    res = 0
+    for i in range(N):
+        for j in range(M):
+            if not arr[i][j]:
+                return -1
+            if res < arr[i][j]:
+                res = arr[i][j]
+    return res-1
+
+M, N = map(int, sys.stdin.readline().split())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+bfs(N, M)
+print(check())
 ```
 
 
@@ -1115,7 +1215,40 @@ for tc in range(T):
 ## 42) [7569. 토마토](https://www.acmicpc.net/problem/7569)
 
 ```python
+import sys
+from collections import deque
 
+def bfs(H, N, M):
+    q = deque([])
+    for k in range(H):
+        for i in range(N):
+            for j in range(M):
+                if arr[k][i][j] == 1:
+                    q.append((i, j, k))
+
+    while q:
+        si, sj, sk = q.popleft()
+        for di, dj, dk in [(1,0,0), (-1,0,0), (0,1,0), (0,-1,0), (0,0,1), (0,0,-1)]:
+            ni, nj, nk = si+di, sj+dj, sk+dk
+            if 0<=ni<N and 0<=nj<M and 0<=nk<H and not arr[nk][ni][nj]:
+                arr[nk][ni][nj] = arr[sk][si][sj] + 1
+                q. append((ni, nj, nk))
+
+def check():
+    res = 0
+    for k in range(H):
+        for i in range(N):
+            for j in range(M):
+                if not arr[k][i][j]:
+                    return -1
+                if res < arr[k][i][j]:
+                    res = arr[k][i][j]
+    return res-1
+
+M, N, H = map(int, sys.stdin.readline().split())
+arr = [[list(map(int, sys.stdin.readline().split())) for _ in range(N)] for __ in range(H)]
+bfs(H, N, M)
+print(check())
 ```
 
 
