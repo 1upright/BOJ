@@ -1256,7 +1256,42 @@ print(check())
 ## 43) [7662. 이중 우선순위 큐](https://www.acmicpc.net/problem/7662)
 
 ```python
+# 인터넷 참고
+import sys, heapq
 
+T = int(input())
+for _ in range(T):
+    k = int(sys.stdin.readline())
+    maxheap, minheap, visited = [], [], [0]*k
+
+    for i in range(k):
+        cal, n = sys.stdin.readline().split()
+        if cal == 'I':
+            heapq.heappush(minheap, [int(n), i])
+            heapq.heappush(maxheap, [-int(n), i])
+            visited[i] = 1
+        elif n == '1':
+            while maxheap and not visited[maxheap[0][1]]:
+                heapq.heappop(maxheap)
+            if maxheap:
+                visited[maxheap[0][1]] = 0
+                heapq.heappop(maxheap)
+        else:
+            while minheap and not visited[minheap[0][1]]:
+                heapq.heappop(minheap)
+            if minheap:
+                visited[minheap[0][1]] = 0
+                heapq.heappop(minheap)
+
+    while maxheap and not visited[maxheap[0][1]]:
+        heapq.heappop(maxheap)
+    while minheap and not visited[minheap[0][1]]:
+        heapq.heappop(minheap)
+
+    if maxheap and minheap:
+        print(-maxheap[0][0], minheap[0][0])
+    else:
+        print('EMPTY')
 ```
 
 
@@ -1264,7 +1299,38 @@ print(check())
 ## 44) [10026. 적록색약](https://www.acmicpc.net/problem/10026)
 
 ```python
+import sys
+from collections import deque
 
+def bfs():
+    global cnt
+    for i in range(N):
+        for j in range(N):
+            if not visited[i][j]:
+                cnt += 1
+                c = arr[i][j]
+                q = deque([(i, j)])
+                while q:
+                    si, sj = q.popleft()
+                    for di, dj in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+                        ni, nj = si + di, sj + dj
+                        if 0<=ni<N and 0<=nj<N and not visited[ni][nj] and arr[ni][nj] == c:
+                            visited[ni][nj] = 1
+                            q.append((ni, nj))
+
+N = int(sys.stdin.readline())
+arr = [list(sys.stdin.readline()) for _ in range(N)]
+cnt = 0
+visited = [[0]*N for _ in range(N)]
+bfs()
+cnt1, cnt = cnt, 0
+visited = [[0]*N for _ in range(N)]
+for i in range(N):
+    for j in range(N):
+        if arr[i][j] == 'R':
+            arr[i][j] = 'G'
+bfs()
+print(cnt1, cnt)
 ```
 
 
@@ -1272,15 +1338,73 @@ print(check())
 ## 45) [14500. 테트로미노](https://www.acmicpc.net/problem/14500)
 
 ```python
+# 인터넷 참고
+import sys
 
+def dfs(i, j, idx, s):
+    global res
+    if idx == 3:
+        res = max(res, s)
+
+    else:
+        for di, dj in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            ni, nj = i+di, j+dj
+            if 0<=ni<N and 0<=nj<M and not visited[ni][nj]:
+                if idx == 1:
+                    visited[ni][nj] = 1
+                    dfs(i, j, idx+1, s+arr[ni][nj])
+                    visited[ni][nj] = 0
+                visited[ni][nj] = 1
+                dfs(ni, nj, idx+1, s+arr[ni][nj])
+                visited[ni][nj] = 0
+
+N, M = map(int, sys.stdin.readline().split())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+visited =[[0]*M for _ in range(N)]
+res = 0
+for i in range(N):
+    for j in range(M):
+        visited[i][j] = 1
+        dfs(i, j, 0, arr[i][j])
+        visited[i][j] = 0
+print(res)
 ```
+
+- idx == 1일 때 i, j로 한번 보내보는게 핵심
+- maxv = max(map(max, arr))를 이용하면 가지치기가 더 가능함
 
 
 
 ## 46) [16928. 뱀과 사다리 게임](https://www.acmicpc.net/problem/16928)
 
 ```python
+from collections import deque
+N, M = map(int, input().split())
+K = N+M
+move = {}
+visited = [0]*101
 
+for _ in range(K):
+    x, y = map(int, input().split())
+    move[x] = y
+
+q = deque([1])
+visited[1] = 1
+while q:
+    v = q.popleft()
+    if v == 100:
+        print(visited[v]-1)
+        break
+    for x in range(6):
+        w = v+x+1
+        if w <= 100 and not visited[w]:
+            if w in move:
+                if not visited[move[w]]:
+                    w = move[w]
+                else:
+                    continue
+            q.append(w)
+            visited[w] = visited[v]+1
 ```
 
 
