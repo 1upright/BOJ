@@ -1412,7 +1412,26 @@ while q:
 ## 47) [9019. DSLR](https://www.acmicpc.net/problem/9019)
 
 ```python
+from collections import deque
+import sys
 
+def bfs(A, B):
+    q = deque([(A, '')])
+    while q:
+        v, res = q.popleft()
+        if v == B:
+            return res
+        for x, y in [(v*2%10000, 'D'), ((v+9999)%10000, 'S'), (v%1000*10+v//1000, 'L'), (v//10+v%10*1000, 'R')]:
+            if not visited[x]:
+                visited[x] = 1
+                q.append((x, res+y))
+
+T = int(sys.stdin.readline())
+for tc in range(1, T+1):
+    A, B = map(int, sys.stdin.readline().split())
+    visited = [0]*10000
+    visited[A] = 1
+    print(bfs(A, B))
 ```
 
 
@@ -1420,6 +1439,51 @@ while q:
 ## 48) [16236. 아기 상어](https://www.acmicpc.net/problem/16236)
 
 ```python
+# 인터넷 참고
+import sys
+from collections import deque
 
+N = int(sys.stdin.readline())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+for i in range(N):
+    for j in range(N):
+        if arr[i][j] == 9:
+            arr[i][j] = 0
+            si, sj = i, j
+            break
+lv = 2
+res = eat = 0
+
+while 1:
+    visited = [[0]*N for _ in range(N)]
+    q = deque([(si, sj, 0)])
+    flag = 400
+    fish = []
+    while q:
+        i, j, cnt = q.popleft()
+        if cnt > flag:
+            break
+        for di, dj in [(-1, 0), (0, -1), (0, 1), (1, 0)]:
+            ni, nj = i+di, j+dj
+            if 0<=ni<N and 0<=nj<N and not visited[ni][nj] and arr[ni][nj]<=lv:
+                if arr[ni][nj] and arr[ni][nj]<lv:
+                    fish.append((ni, nj, cnt+1))
+                    flag = cnt
+                visited[ni][nj] = 1
+                q.append((ni, nj, cnt+1))
+
+    if fish:
+        fish.sort()
+        i, j, move = fish[0][0], fish[0][1], fish[0][2]
+        res += move
+        eat += 1
+        arr[i][j] = 0
+        if eat == lv:
+            lv += 1
+            eat = 0
+        si, sj = i, j
+    else:
+        break
+print(res)
 ```
 
