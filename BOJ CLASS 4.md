@@ -1,0 +1,382 @@
+# BOJ_CLASS_4
+
+## 1)  [2047. 조합](https://www.acmicpc.net/problem/2407)
+
+```python
+```
+
+
+
+## 2) [15650. N과 M (2)](https://www.acmicpc.net/problem/15650) 
+
+```python
+```
+
+
+
+## 3) [15652. N과 M (4)](https://www.acmicpc.net/problem/15652)
+
+```python
+
+```
+
+
+
+## 4) [15654. N과 M (5)](https://www.acmicpc.net/problem/15654)
+
+```python
+
+```
+
+
+
+## 5) [15657. N과 M (8)](https://www.acmicpc.net/problem/15657) 
+
+```python
+
+```
+
+
+
+## 6) [11053. 가장 긴 증가하는 부분 수열](https://www.acmicpc.net/problem/11053) 
+
+```python
+
+```
+
+
+
+## 7) [11725. 트리의 부모 찾기](https://www.acmicpc.net/problem/11725)
+
+```python
+
+```
+
+
+
+## 8) [15663. N과 M (9)](https://www.acmicpc.net/problem/15663)
+
+```python
+
+```
+
+
+
+## 9) [15663. N과 M (12)](https://www.acmicpc.net/problem/15666) 
+
+```python
+
+```
+
+
+
+## 10) [1149. RGB거리](https://www.acmicpc.net/problem/1149) 
+
+```python
+
+```
+
+
+
+## 11) [1629. 곱셈](https://www.acmicpc.net/problem/1629)
+
+```python
+
+```
+
+
+
+## 12) [1932. 정수 삼각형](https://www.acmicpc.net/problem/1932)
+
+```python
+
+```
+
+
+
+## 13) [1991. 트리 순회](https://www.acmicpc.net/problem/1991)
+
+```python
+
+```
+
+
+
+## 14) [9465. 스티커](https://www.acmicpc.net/problem/9465)
+
+```python
+
+```
+
+
+
+## 15) [11660. 구간 합 구하기 5](https://www.acmicpc.net/problem/11660) 
+
+```python
+
+```
+
+
+
+## 16) [16953. A → B](https://www.acmicpc.net/problem/16953)
+
+```python
+
+```
+
+
+
+## 17) [1753. 최단경로](https://www.acmicpc.net/problem/1753)
+
+```python
+
+```
+
+
+
+## 18) [1916. 최소비용 구하기](https://www.acmicpc.net/problem/1916)
+
+```python
+
+```
+
+
+
+## 19) [5639. 이진 검색 트리](https://www.acmicpc.net/problem/5639)
+
+```python
+
+```
+
+
+
+## 20) [9251. LCS](https://www.acmicpc.net/problem/9251)
+
+```python
+
+```
+
+
+
+## 21) [9663. N-Queen](https://www.acmicpc.net/problem/9663)
+
+```python
+
+```
+
+
+
+## 22) [12851. 숨바꼭질 2](https://www.acmicpc.net/problem/12851)
+
+```python
+
+```
+
+
+
+## 23) [12865. 평범한 배낭](https://www.acmicpc.net/problem/12865)
+
+```python
+
+```
+
+
+
+## 24) [13549. 숨바꼭질 3](https://www.acmicpc.net/problem/13549)
+
+```python
+
+```
+
+
+
+## 25) [14502. 연구소](https://www.acmicpc.net/problem/14502)
+
+```python
+
+```
+
+
+
+## 26) [15686. 치킨 배달](https://www.acmicpc.net/problem/15686)
+
+```python
+
+```
+
+
+
+## 27) [17070. 파이프 옮기기 1](https://www.acmicpc.net/problem/17070)
+
+```python
+
+```
+
+
+
+## 28) [1043. 거짓말](https://www.acmicpc.net/problem/1043)
+
+```python
+
+```
+
+
+
+## 29) [1504. 특정한 최단 경로](https://www.acmicpc.net/problem/1504)
+
+```python
+
+```
+
+
+
+## 30) [1967. 트리의 지름](https://www.acmicpc.net/problem/1967)
+
+```python
+
+```
+
+
+
+## 31) [2096. 내려가기](https://www.acmicpc.net/problem/2096)
+
+```python
+
+```
+
+
+
+## 32) [2206. 벽 부수고 이동하기](https://www.acmicpc.net/problem/2206)
+
+```python
+
+```
+
+
+
+## 33) [2448. 별 찍기 - 11](https://www.acmicpc.net/problem/2448)
+
+```python
+
+```
+
+
+
+## 34) [2638. 치즈](https://www.acmicpc.net/problem/2638)
+
+```python
+
+```
+
+
+
+## 35) [9935. 문자열 폭발](https://www.acmicpc.net/problem/9935)
+
+```python
+
+```
+
+
+
+## 36) [10830. 행렬 제곱](https://www.acmicpc.net/problem/10830)
+
+```python
+
+```
+
+
+
+## 37) [11404. 플로이드](https://www.acmicpc.net/problem/11404)
+
+```python
+
+```
+
+
+
+## 38) [13172. Σ](https://www.acmicpc.net/problem/13172)
+
+```python
+
+```
+
+
+
+## 39) [14938. 서강그라운드](https://www.acmicpc.net/problem/14938)
+
+```python
+
+```
+
+
+
+## 40) [17144. 미세먼지 안녕!](https://www.acmicpc.net/problem/17144)
+
+```python
+
+```
+
+
+
+## 41) [1167. 트리의 지름](https://www.acmicpc.net/problem/1167)
+
+```python
+
+```
+
+
+
+## 42) [1238. 파티](https://www.acmicpc.net/problem/1238)
+
+```python
+
+```
+
+
+
+## 43) [1865. 웜홀](https://www.acmicpc.net/problem/1865)
+
+```python
+
+```
+
+
+
+## 44) [1918. 후위 표기식](https://www.acmicpc.net/problem/1918)
+
+```python
+
+```
+
+
+
+## 45) [11054. 가장 긴 바이토닉 부분 수열](https://www.acmicpc.net/problem/11054)
+
+```python
+
+```
+
+
+
+## 46) [11779. 최소비용 구하기 2](https://www.acmicpc.net/problem/11779)
+
+```python
+
+```
+
+
+
+## 47) [2263. 트리의 순회](https://www.acmicpc.net/problem/2263)
+
+```python
+
+```
+
+
+
+## 48) [11444. 피보나치 수 6](https://www.acmicpc.net/problem/11444)
+
+```python
+
+```
+
