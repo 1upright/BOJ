@@ -3,6 +3,9 @@
 ## 1)  [2047. 조합](https://www.acmicpc.net/problem/2407)
 
 ```python
+from math import factorial
+n, m = map(int, input().split())
+print(factorial(n)//factorial(m)//factorial(n-m))
 ```
 
 
@@ -10,6 +13,28 @@
 ## 2) [15650. N과 M (2)](https://www.acmicpc.net/problem/15650) 
 
 ```python
+# 치트키
+from itertools import combinations
+N, M = map(int, input().split())
+arr = list(range(1, N+1))
+for c in list(combinations(arr, M)):
+    print(*c)
+
+# import 없이
+def dfs(i, M, tmp):
+    if i == M:
+        print(*arr)
+        return
+    else:
+        for j in range(tmp, N+1):
+            if j not in arr:
+                arr[i] = j
+                dfs(i+1, M, j)
+                arr[i] = 0
+
+N, M = map(int, input().split())
+arr = [0]*M
+dfs(0, M, 0)
 ```
 
 
@@ -17,7 +42,19 @@
 ## 3) [15652. N과 M (4)](https://www.acmicpc.net/problem/15652)
 
 ```python
+def dfs(i, M, tmp):
+    if i == M:
+        print(*arr)
+        return
+    else:
+        for j in range(tmp, N+1):
+            arr[i] = j
+            dfs(i+1, M, j)
+            arr[i] = 0
 
+N, M = map(int, input().split())
+arr = [0]*M
+dfs(0, M, 1)
 ```
 
 
@@ -25,7 +62,25 @@
 ## 4) [15654. N과 M (5)](https://www.acmicpc.net/problem/15654)
 
 ```python
+def dfs(i, M):
+    if i == M:
+        print(*ls)
+        return
+    else:
+        for j in range(N):
+            if not visited[j]:
+                ls[i] = arr[j]
+                visited[j] = 1
+                dfs(i+1, M)
+                ls[i] = 0
+                visited[j] = 0
 
+N, M = map(int, input().split())
+arr = list(map(int, input().split()))
+arr.sort()
+ls = [0]*M
+visited = [0]*N
+dfs(0, M)
 ```
 
 
@@ -33,7 +88,21 @@
 ## 5) [15657. N과 M (8)](https://www.acmicpc.net/problem/15657) 
 
 ```python
+def dfs(i, M, tmp):
+    if i == M:
+        print(*ls)
+        return
+    else:
+        for j in range(tmp, N):
+            ls[i] = arr[j]
+            dfs(i+1, M, j)
+            ls[i] = 0
 
+N, M = map(int, input().split())
+arr = list(map(int, input().split()))
+arr.sort()
+ls = [0]*M
+dfs(0, M, 0)
 ```
 
 
@@ -41,7 +110,14 @@
 ## 6) [11053. 가장 긴 증가하는 부분 수열](https://www.acmicpc.net/problem/11053) 
 
 ```python
-
+N = int(input())
+arr = list(map(int, input().split()))
+dp = [1]*N
+for i in range(1, N):
+    for j in range(i):
+        if arr[j] < arr[i]:
+            dp[i] = max(dp[i], dp[j]+1)
+print(max(dp))
 ```
 
 
@@ -49,7 +125,26 @@
 ## 7) [11725. 트리의 부모 찾기](https://www.acmicpc.net/problem/11725)
 
 ```python
+N = int(input())
+tree = [[] for _ in range(N+1)]
+for _ in range(N-1):
+    p, c = map(int, input().split())
+    tree[p].append(c)
+    tree[c].append(p)
 
+visited = [0]*(N+1)
+visited[1] = 1
+
+q = [1]
+while q:
+    v = q.pop(0)
+    for x in tree[v]:
+        if not visited[x]:
+            q.append(x)
+            visited[x] = v
+
+for x in visited[2:N+1]:
+    print(x)
 ```
 
 
@@ -57,7 +152,52 @@
 ## 8) [15663. N과 M (9)](https://www.acmicpc.net/problem/15663)
 
 ```python
+# 시간 초과
+def dfs(i, M):
+    if i == M:
+        tmp = list(map(str, ls))
+        if tmp not in res:
+            res.append(tmp)
+        return
+    for x in arr:
+        ls.append(x)
+        dfs(i+1, M)
+        ls.pop()
 
+N, M = map(int, input().split())
+arr = list(map(int, input().split()))
+arr.sort()
+res = []
+ls = []
+
+dfs(0, M)
+for x in res:
+    print(*x)
+    
+# 정답
+import sys
+
+def dfs(i, M):
+    if i == M:
+        print(*ls)
+        return
+    tmp = 0
+    for j in range(N):
+        if not visited[j] and arr[j] != tmp:
+            visited[j] = 1
+            ls.append(arr[j])
+            tmp = arr[j]
+            dfs(i+1, M)
+            visited[j] = 0
+            ls.pop()
+
+N, M = map(int, sys.stdin.readline().split())
+arr = list(map(int, sys.stdin.readline().split()))
+arr.sort()
+ls = []
+visited = [0]*N
+
+dfs(0, M)
 ```
 
 
