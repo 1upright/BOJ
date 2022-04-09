@@ -205,7 +205,25 @@ dfs(0, M)
 ## 9) [15663. N과 M (12)](https://www.acmicpc.net/problem/15666) 
 
 ```python
+import sys
 
+def dfs(i, M):
+    if i == M:
+        print(*ls[1:])
+        return
+    tmp = 0
+    for j in range(N):
+        if ls[i] <= arr[j] and arr[j] != tmp:
+            ls.append(arr[j])
+            tmp = arr[j]
+            dfs(i+1, M)
+            ls.pop()
+
+N, M = map(int, sys.stdin.readline().split())
+arr = list(map(int, sys.stdin.readline().split()))
+arr.sort()
+ls = [0]
+dfs(0, M)
 ```
 
 
@@ -213,7 +231,34 @@ dfs(0, M)
 ## 10) [1149. RGB거리](https://www.acmicpc.net/problem/1149) 
 
 ```python
+# 시간 초과
+import sys
 
+def dfs(i, N, s, tmp):
+    global res
+    if i == N:
+        if res > s:
+            res = s
+        return
+    for j in range(3):
+        if tmp != j:
+            dfs(i+1, N, s+arr[i][j], j)
+
+N = int(sys.stdin.readline())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+res = 10000000
+dfs(0, N, 0, -1)
+print(res)
+
+# 정답
+import sys
+N = int(sys.stdin.readline())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+for i in range(1, N):
+    arr[i][0] = min(arr[i-1][1], arr[i-1][2]) + arr[i][0]
+    arr[i][1] = min(arr[i-1][0], arr[i-1][2]) + arr[i][1]
+    arr[i][2] = min(arr[i-1][0], arr[i-1][1]) + arr[i][2]
+print(min(arr[N-1]))
 ```
 
 
@@ -221,7 +266,17 @@ dfs(0, M)
 ## 11) [1629. 곱셈](https://www.acmicpc.net/problem/1629)
 
 ```python
+# 나눗셈 분배 법칙 인터넷 참고
+def boo(a, b, c):
+    if b == 1:
+        return a%c
+    tmp = boo(a, b//2, c)
+    if b%2:
+        return tmp*tmp*a%c
+    return tmp*tmp%c
 
+a, b, c = map(int, input().split())
+print(boo(a, b, c))
 ```
 
 
