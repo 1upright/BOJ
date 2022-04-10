@@ -284,7 +284,17 @@ print(boo(a, b, c))
 ## 12) [1932. 정수 삼각형](https://www.acmicpc.net/problem/1932)
 
 ```python
-
+N = int(input())
+if N == 1:
+    print(input())
+else:
+    arr = [list(map(int, input().split())) for _ in range(N)]
+    dp = [[0]*i for i in range(3, N+3)]
+    dp[0][1] = arr[0][0]
+    for i in range(1, N):
+        for j in range(1, i+2):
+            dp[i][j] = max(dp[i-1][j-1]+arr[i][j-1], dp[i-1][j]+arr[i][j-1])
+    print(max(dp[N-1]))
 ```
 
 
@@ -292,7 +302,36 @@ print(boo(a, b, c))
 ## 13) [1991. 트리 순회](https://www.acmicpc.net/problem/1991)
 
 ```python
+import sys
 
+def pre_order(p):
+    if p != '.':
+        print(p, end='')
+        pre_order(tree[p][0])
+        pre_order(tree[p][1])
+
+def in_order(p):
+    if p != '.':
+        in_order(tree[p][0])
+        print(p, end='')
+        in_order(tree[p][1])
+
+def post_order(p):
+    if p != '.':
+        post_order(tree[p][0])
+        post_order(tree[p][1])
+        print(p, end='')
+
+N = int(sys.stdin.readline())
+tree = {}
+for i in range(N):
+    p, c1, c2 = sys.stdin.readline().split()
+    tree[p] = [c1, c2]
+pre_order('A')
+print()
+in_order('A')
+print()
+post_order('A')
 ```
 
 
@@ -300,7 +339,25 @@ print(boo(a, b, c))
 ## 14) [9465. 스티커](https://www.acmicpc.net/problem/9465)
 
 ```python
+import sys
 
+T = int(input())
+for _ in range(T):
+    N = int(sys.stdin.readline())
+    arr = [list(map(int, sys.stdin.readline().split())) for _ in range(2)]
+    dp = [[0]*N for _ in range(2)]
+    dp[0][0] = arr[0][0]
+    dp[1][0] = arr[1][0]
+    
+    for i in range(1, N):
+        if i == 1:
+            dp[0][1] = arr[1][0]+arr[0][1]
+            dp[1][1] = arr[0][0]+arr[1][1]
+        else:
+            dp[0][i] = max(dp[1][i-1]+arr[0][i], dp[1][i-2]+arr[0][i])
+            dp[1][i] = max(dp[0][i-1]+arr[1][i], dp[0][i-2]+arr[1][i])
+    
+    print(max(dp[0][N-1], dp[1][N-1]))
 ```
 
 
@@ -308,7 +365,30 @@ print(boo(a, b, c))
 ## 15) [11660. 구간 합 구하기 5](https://www.acmicpc.net/problem/11660) 
 
 ```python
+# 시간 초과
+import sys
+N, M = map(int, sys.stdin.readline().split())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+for _ in range(M):
+    x1, y1, x2, y2 = map(int, sys.stdin.readline().split())
+    cnt = 0
+    for i in range(x1-1, x2):
+        cnt += sum(arr[i][y1-1:y2])
+    print(cnt)
 
+# 정답
+import sys
+N, M = map(int, sys.stdin.readline().split())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+cnt = [[0]*(N+1) for _ in range(N+1)]
+
+for i in range(N):
+    for j in range(N):
+        cnt[i+1][j+1] = cnt[i][j+1] + cnt[i+1][j] - cnt[i][j] + arr[i][j]
+
+for _ in range(M):
+    x1, y1, x2, y2 = map(int, sys.stdin.readline().split())
+    print(cnt[x2][y2] + cnt[x1-1][y1-1] - cnt[x1-1][y2] - cnt[x2][y1-1])
 ```
 
 
@@ -316,7 +396,42 @@ print(boo(a, b, c))
 ## 16) [16953. A → B](https://www.acmicpc.net/problem/16953)
 
 ```python
+# 메모리 초과
+from collections import deque
 
+def bfs(a, b):
+    q = deque([a])
+    visited[a] = 1
+    while q:
+        v = q.popleft()
+        if v == b:
+            return visited[v]
+        for x in [v*2, v*10+1]:
+            if x<=B and not visited[x]:
+                q.append(x)
+                visited[x] = visited[v]+1
+    return -1
+
+A, B = map(int, input().split())
+visited = [0]*(B+1)
+print(bfs(A, B))
+
+# 정답
+from collections import deque
+
+def bfs(a, b):
+    q = deque([(a, 1)])
+    while q:
+        v, cnt = q.popleft()
+        if v == b:
+            return cnt
+        for x in [v*2, v*10+1]:
+            if x<=B:
+                q.append((x, cnt+1))
+    return -1
+
+A, B = map(int, input().split())
+print(bfs(A, B))
 ```
 
 
