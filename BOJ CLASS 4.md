@@ -439,7 +439,104 @@ print(bfs(A, B))
 ## 17) [1753. 최단경로](https://www.acmicpc.net/problem/1753)
 
 ```python
+# 메모리 초과
+import sys
 
+def dijkstra(s, N):
+    U = [0]*(N+1)
+    U[s] = 1
+    for i in range(N+1):
+        D[i] = arr[s][i]
+
+    for _ in range(N+1):
+        minV = INF
+        w = 0
+        for i in range(N+1):
+            if not U[i] and minV > D[i]:
+                minV = D[i]
+                w = i
+        U[w] = 1
+        for v in range(N+1):
+            if 0<arr[w][v]<INF:
+                D[v] = min(D[v], D[w]+arr[w][v])
+
+V, E = map(int, sys.stdin.readline().split())
+n = int(sys.stdin.readline())
+INF = 999999
+arr = [[INF]*V for _ in range(V)]
+
+for i in range(V):
+    arr[i][i] = 0
+
+for _ in range(E):
+    u, v, w = map(int, sys.stdin.readline().split())
+    arr[u-1][v-1] = w
+
+D = [0]*V
+dijkstra(n-1, V-1)
+for x in D:
+    print("INF" if x == INF else x)
+    
+# 시간 초과
+import sys
+
+def dijkstra(s, V):
+    U = [0]*(V+1)
+    U[s] = 1
+    D[s] = 0
+    for v, w in adj[s]:
+        D[v] = w
+
+    for _ in range(V):
+        minV = INF
+        t = 0
+        for i in range(V+1):
+            if U[i] == 0 and minV > D[i]:
+                minV = D[i]
+                t = i
+        U[t] = 1
+        for v, w in adj[t]:
+            D[v] = min(D[v], D[t]+w)
+
+V, E = map(int, sys.stdin.readline().split())
+n = int(sys.stdin.readline())
+INF = 999999
+adj = [[] for _ in range(V+1)]
+for _ in range(E):
+    u, v, w = map(int, sys.stdin.readline().split())
+    adj[u].append([v, w])
+D = [INF]*(V+1)
+dijkstra(n, V)
+for i in range(1, V+1):
+    print('INF' if D[i] == INF else D[i])
+    
+# 인터넷 참고 정답
+import sys
+import heapq
+
+def dijkstra(s):
+    D[s] = 0
+    heapq.heappush(heap, [0, s])
+    while heap:
+        val, i = heapq.heappop(heap)
+        for v, w in adj[i]:
+            tmp = w + val
+            if D[v] > tmp:
+                D[v] = tmp
+                heapq.heappush(heap, [tmp, v])
+
+V, E = map(int, sys.stdin.readline().split())
+n = int(sys.stdin.readline())
+INF = 999999
+adj = [[] for _ in range(V+1)]
+for _ in range(E):
+    u, v, w = map(int, sys.stdin.readline().split())
+    adj[u].append([v, w])
+D = [INF]*(V+1)
+heap = []
+dijkstra(n)
+for x in D[1:]:
+    print('INF' if x == INF else x)
 ```
 
 
