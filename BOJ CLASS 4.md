@@ -544,7 +544,64 @@ for x in D[1:]:
 ## 18) [1916. 최소비용 구하기](https://www.acmicpc.net/problem/1916)
 
 ```python
+# 시간 초과
+import sys, heapq
 
+def dijkstra(s):
+    D[s] = 0
+    heapq.heappush(heap, [0, s])
+    while heap:
+        val, i = heapq.heappop(heap)
+        for v, w in adj[i]:
+            tmp = w + val
+            if D[v] > tmp:
+                D[v] = tmp
+                heapq.heappush(heap, [tmp, v])
+
+V = int(sys.stdin.readline())
+E = int(sys.stdin.readline())
+adj = [[] for _ in range(V+1)]
+
+for _ in range(E):
+    u, v, w = map(int, sys.stdin.readline().split())
+    adj[u].append([v, w])
+s, e = map(int, sys.stdin.readline().split())
+
+INF = 100000000
+D = [INF]*(V+1)
+heap = []
+dijkstra(s)
+print(D[e])
+
+# 정답
+import sys, heapq
+
+def dijkstra(s, e):
+    D[s] = 0
+    heapq.heappush(heap, [0, s])
+    while heap:
+        val, i = heapq.heappop(heap)
+        if i == e:
+            return D[e]
+        for v, w in adj[i]:
+            tmp = w + val
+            if D[v] > tmp:
+                D[v] = tmp
+                heapq.heappush(heap, [tmp, v])
+
+V = int(sys.stdin.readline())
+E = int(sys.stdin.readline())
+adj = [[] for _ in range(V+1)]
+
+for _ in range(E):
+    u, v, w = map(int, sys.stdin.readline().split())
+    adj[u].append([v, w])
+s, e = map(int, sys.stdin.readline().split())
+
+INF = 100000000
+D = [INF]*(V+1)
+heap = []
+print(dijkstra(s, e))
 ```
 
 
