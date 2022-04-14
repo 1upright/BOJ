@@ -609,7 +609,34 @@ print(dijkstra(s, e))
 ## 19) [5639. 이진 검색 트리](https://www.acmicpc.net/problem/5639)
 
 ```python
+# 인터넷 참고
+import sys
+sys.setrecursionlimit(10**9)
 
+def post_order(s, e):
+    if s >= e:
+        return
+    root = pre_order[s]
+    idx = s+1
+
+    for i in range(s+1, e):
+        if pre_order[i] > root:
+            idx = i
+            break
+
+    post_order(s+1, idx)
+    post_order(idx, e)
+    print(root)
+    return
+
+pre_order = []
+while 1:
+    try:
+        pre_order.append(int(sys.stdin.readline()))
+    except:
+        break
+
+post_order(0, len(pre_order))
 ```
 
 
@@ -617,7 +644,20 @@ print(dijkstra(s, e))
 ## 20) [9251. LCS](https://www.acmicpc.net/problem/9251)
 
 ```python
+import sys
+s1 = list(sys.stdin.readline().rstrip())
+s2 = list(sys.stdin.readline().rstrip())
+N, M = len(s1), len(s2)
+arr = [[0]*(M+1) for _ in range(N+1)]
 
+for i in range(1, N+1):
+    for j in range(1, M+1):
+        if s1[i-1] == s2[j-1]:
+            arr[i][j] = arr[i-1][j-1] + 1
+        else:
+            arr[i][j] = max(arr[i-1][j], arr[i][j-1])
+
+print(arr[N][M])
 ```
 
 
@@ -625,7 +665,47 @@ print(dijkstra(s, e))
 ## 21) [9663. N-Queen](https://www.acmicpc.net/problem/9663)
 
 ```python
+# 시간 초과
+def foo(i, n):
+    global res
+    if i == n:
+        res += 1
+        return
+    for j in range(n):
+        v[i] = j
+        if bar(i):
+            foo(i+1, N)
 
+def bar(x):
+    for i in range(x):
+        if v[i] == v[x] or abs(i-x) == abs(v[i]-v[x]):
+            return 0
+    return 1
+
+N = int(input())
+res = 0
+v = [0]*N
+foo(0, N)
+print(res)
+
+# pypy로 돌려야 성공
+def dfs(i, n):
+    global res
+    if i == n:
+        res += 1
+        return
+
+    for j in range(n):
+        if v1[j]==v2[i+j]==v3[i-j]==0:
+            v1[j] = v2[i+j] = v3[i-j] = 1
+            dfs(i+1, n)
+            v1[j] = v2[i+j] = v3[i-j] = 0
+
+N = int(input())
+res = 0
+v1, v2, v3 = [0]*30, [0]*30, [0]*30
+dfs(0, N)
+print(res)
 ```
 
 
