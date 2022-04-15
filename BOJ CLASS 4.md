@@ -713,7 +713,25 @@ print(res)
 ## 22) [12851. 숨바꼭질 2](https://www.acmicpc.net/problem/12851)
 
 ```python
+from collections import deque
 
+N, K = map(int, input().split())
+q = deque([N])
+visited = [0]*100001
+visited[N] = 1
+cnt = 0
+
+while q:
+    v = q.popleft()
+    if v==K:
+        cnt += 1
+    for x in [v+1, v-1, v*2]:
+        if 0<=x<=100000 and (not visited[x] or visited[x]==visited[v]+1):
+            visited[x] = visited[v]+1
+            q.append(x)
+
+print(visited[K]-1)
+print(cnt)
 ```
 
 
