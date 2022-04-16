@@ -739,7 +739,22 @@ print(cnt)
 ## 23) [12865. 평범한 배낭](https://www.acmicpc.net/problem/12865)
 
 ```python
+import sys
+input = sys.stdin.readline
 
+N, K = map(int, input().split())
+dp = [[0]*(K+1) for _ in range(N+1)]
+bag = [[0, 0]] + [list(map(int, input().split())) for _ in range(N)]
+
+for i in range(1, N+1):
+    for j in range(1, K+1):
+        w, v = bag[i][0], bag[i][1]
+        if j < w:
+            dp[i][j] = dp[i-1][j]
+        else:
+            dp[i][j] = max(dp[i-1][j], dp[i-1][j-w]+v)
+
+print(dp[N][K])
 ```
 
 
@@ -747,7 +762,28 @@ print(cnt)
 ## 24) [13549. 숨바꼭질 3](https://www.acmicpc.net/problem/13549)
 
 ```python
+# v*2를 먼저 봐줘야함
+from collections import deque
 
+N, K = map(int, input().split())
+visited = [0]*100001
+visited[N] = 1
+q = deque([N])
+while q:
+    v = q.popleft()
+    if v == K:
+        print(visited[v]-1)
+        break
+    
+    tmp = v*2
+    if tmp <= 100000 and not visited[tmp]:
+        visited[tmp] = visited[v]
+        q.appendleft(tmp)
+    
+    for x in [v+1, v-1]:
+        if 0<=x<=100000 and not visited[x]:
+            visited[x] = visited[v]+1
+            q.append(x)
 ```
 
 
@@ -755,7 +791,50 @@ print(cnt)
 ## 25) [14502. 연구소](https://www.acmicpc.net/problem/14502)
 
 ```python
+import sys
+input = sys.stdin.readline
+from itertools import combinations
+from copy import deepcopy
+from collections import deque
 
+def infection(i, j):
+    q = deque([(i, j)])
+    while q:
+        si, sj = q.popleft()
+        for di, dj in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            ni, nj = si+di, sj+dj
+            if 0<=ni<N and 0<=nj<M and not tmp[ni][nj]:
+                tmp[ni][nj] = 2
+                q.append((ni, nj))
+
+
+N, M = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(N)]
+
+virus = []
+safe = []
+for i in range(N):
+    for j in range(M):
+        if not arr[i][j]:
+            safe.append((i, j))
+        if arr[i][j] == 2:
+            virus.append((i, j))
+
+res = 0
+for com in list(combinations(safe, 3)):
+    tmp = deepcopy(arr)
+    for i, j in com:
+        tmp[i][j] = 1
+    for i, j in virus:
+        infection(i, j)
+    cnt = 0
+    for i in range(N):
+        for j in range(M):
+            if not tmp[i][j]:
+                cnt += 1
+    if res < cnt:
+        res = cnt
+print(res)
 ```
 
 
@@ -763,7 +842,77 @@ print(cnt)
 ## 26) [15686. 치킨 배달](https://www.acmicpc.net/problem/15686)
 
 ```python
+# 시간 초과
+import sys
+input = sys.stdin.readline
+from itertools import combinations
+from copy import deepcopy
+from collections import deque
 
+def chk_dis(i, j):
+    global cnt
+    visited = [[0]*N for _ in range(N)]
+    visited[i][j] = 1
+    q = deque([(i, j)])
+    while q:
+        si, sj = q.popleft()
+        if tmp[si][sj] == 2:
+            cnt += visited[si][sj]-1
+            return
+        for di, dj in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            ni, nj = si+di, sj+dj
+            if 0<=ni<N and 0<=nj<N and not visited[ni][nj]:
+                visited[ni][nj] = visited[si][sj] + 1
+                q.append((ni, nj))
+
+N, M = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(N)]
+
+chk = []
+for i in range(N):
+    for j in range(N):
+        if arr[i][j] == 2:
+            chk.append((i, j))
+
+res = 99999
+for com in combinations(chk, len(chk)-M):
+    tmp = deepcopy(arr)
+    for i, j in com:
+        tmp[i][j] = 0
+    cnt = 0
+    for i in range(N):
+        for j in range(N):
+            if tmp[i][j] == 1:
+                chk_dis(i, j)
+    if res > cnt:
+        res = cnt
+print(res)
+
+# 정답
+import sys
+input = sys.stdin.readline
+from itertools import combinations
+
+N, M = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(N)]
+
+home = []
+chk = []
+for i in range(N):
+    for j in range(N):
+        if arr[i][j] == 2:
+            chk.append((i, j))
+        if arr[i][j] == 1:
+            home.append((i, j))
+
+res = 999999
+for com in combinations(chk, M):
+    cnt = 0
+    for h in home:
+        cnt += min([abs(h[0]-c[0])+abs(h[1]-c[1]) for c in com])
+    if res > cnt:
+        res = cnt
+print(res)
 ```
 
 
@@ -771,7 +920,29 @@ print(cnt)
 ## 27) [17070. 파이프 옮기기 1](https://www.acmicpc.net/problem/17070)
 
 ```python
+import sys
+input = sys.stdin.readline
 
+def dfs(i, j, k):
+    global cnt
+    if i == N-1 and j == N-1:
+        cnt += 1
+        return
+
+    if k == 1 or k == 3:
+        if j+1<N and not arr[i][j+1]:
+            dfs(i, j+1, 1)
+    if k == 2 or k == 3:
+        if i+1<N and not arr[i+1][j]:
+            dfs(i+1, j, 2)
+    if i+1<N and j+1<N and not arr[i][j+1] and not arr[i+1][j] and not arr[i+1][j+1]:
+        dfs(i+1, j+1, 3)
+
+N = int(input())
+arr = [list(map(int, input().split())) for _ in range(N)]
+cnt = 0
+dfs(0, 1, 1)
+print(cnt)
 ```
 
 
