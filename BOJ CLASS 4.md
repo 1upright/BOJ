@@ -950,7 +950,36 @@ print(cnt)
 ## 28) [1043. 거짓말](https://www.acmicpc.net/problem/1043)
 
 ```python
+import sys
+input = sys.stdin.readline
 
+N, M = map(int, input().split())
+truth = list(map(int, input().split()))[1:]
+visited = [0]*(N+1)
+for t in truth:
+    visited[t] = 1
+
+party = []
+for _ in range(M):
+    p = list(map(int, input().split()))[1:]
+    party.append(p)
+
+res = [0]*M
+while truth:
+    v = truth.pop(0)
+
+    check = set()
+    for i in range(M):
+        if v in party[i]:
+            check |= set(party[i])
+            res[i] = 1
+
+    for c in check:
+        if not visited[c]:
+            visited[c] = 1
+            truth.append(c)
+
+print(res.count(0))
 ```
 
 
@@ -958,7 +987,94 @@ print(cnt)
 ## 29) [1504. 특정한 최단 경로](https://www.acmicpc.net/problem/1504)
 
 ```python
+# 시간 초과
+import sys
+input = sys.stdin.readline
 
+def dfs(now, s, lst):
+    global res
+    if now == N and v1 in lst and v2 in lst:
+        if res > s:
+            res = s
+        return
+    for x in range(N+1):
+        if graph[now][x] and not visited[x]:
+            visited[x] = 1
+            dfs(x, s+graph[now][x], lst+[x])
+            visited[x] = 0
+
+N, E = map(int, input().split())
+
+graph = [[0]*(N+1) for _ in range(N+1)]
+for _ in range(E):
+    a, b, c = map(int, input().split())
+    graph[a][b] = c
+    graph[b][a] = c
+
+v1, v2 = map(int, input().split())
+
+visited = [0]*(N+1)
+visited[1] = 1
+res = 9999999
+dfs(1, 0, [1])
+print(res if res<9999999 else -1)
+
+# 시간 초과 2
+import sys
+input = sys.stdin.readline
+
+N, E = map(int, input().split())
+INF = 9999999
+graph = [[INF]*N for _ in range(N)]
+for i in range(N):
+    graph[i][i] = 0
+for _ in range(E):
+    a, b, c = map(int, input().split())
+    graph[a-1][b-1] = c
+    graph[b-1][a-1] = c
+
+v1, v2 = map(int, input().split())
+
+for k in range(N):
+    for i in range(N):
+        for j in range(N):
+            if graph[i][j] > graph[i][k] + graph[k][j] and j != k:
+                graph[i][j] = graph[i][k] + graph[k][j]
+
+print(min(graph[0][v1-1]+graph[v1-1][v2-1]+graph[v2-1][N-1], graph[0][v2-1]+graph[v2-1][v1-1]+graph[v1-1][N-1]))
+
+# 정답
+import sys, heapq
+input = sys.stdin.readline
+
+def dijkstra(s, e):
+    D = [INF]*(N+1)
+    heap = []
+    D[s] = 0
+    heapq.heappush(heap, [0, s])
+    while heap:
+        val, i = heapq.heappop(heap)
+        if i == e:
+            return D[e]
+        for v, w in adj[i]:
+            tmp = w+val
+            if D[v] > tmp:
+                D[v] = tmp
+                heapq.heappush(heap, [tmp, v])
+    return INF
+    
+N, E = map(int, input().split())
+adj = [[] for _ in range(N+1)]
+
+for _ in range(E):
+    a, b, c = map(int, input().split())
+    adj[a].append([b, c])
+    adj[b].append([a, c])
+v1, v2 = map(int, input().split())
+
+INF = 9999999
+res = min(dijkstra(1, v1)+dijkstra(v1, v2)+dijkstra(v2, N), dijkstra(1, v2)+dijkstra(v2, v1)+dijkstra(v1, N))
+print(res if res<INF else -1)
 ```
 
 
@@ -966,7 +1082,83 @@ print(cnt)
 ## 30) [1967. 트리의 지름](https://www.acmicpc.net/problem/1967)
 
 ```python
+# 당연히 시간 초과
+import sys
+input = sys.stdin.readline
 
+def dfs(now, s):
+    global res
+    for v, w in adj[now]:
+        if not visited[v]:
+            break
+    else:
+        if res < s:
+            res = s
+            return
+    for v, w in adj[now]:
+        if not visited[v]:
+            visited[v] = 1
+            dfs(v, s+w)
+            visited[v] = 0
+
+N = int(input())
+adj = [[]*(N+1) for _ in range(N+1)]
+while 1:
+    try:
+        u, v, w = map(int, input().split())
+        adj[u].append([v, w])
+        adj[v].append([u, w])
+    except:
+        break
+
+res = 0
+for i in range(1, N+1):
+    visited = [0]*(N+1)
+    visited[i] = 1
+    dfs(i, 0)
+print(res)
+
+# 정답
+# 인터넷 참고 - 임의의 한 점에서 가장 멀리 있는 점은 트리 지름의 한 쪽 끝
+import sys
+input = sys.stdin.readline
+sys.setrecursionlimit(10**9)
+
+def dfs(now, s):
+    global res, ans
+    for v, w in adj[now]:
+        if not visited[v]:
+            break
+    else:
+        if res < s:
+            res = s
+            ans = now
+            return
+    for v, w in adj[now]:
+        if not visited[v]:
+            visited[v] = 1
+            dfs(v, s+w)
+            visited[v] = 0
+
+N = int(input())
+adj = [[]*(N+1) for _ in range(N+1)]
+while 1:
+    try:
+        u, v, w = map(int, input().split())
+        adj[u].append([v, w])
+        adj[v].append([u, w])
+    except:
+        break
+
+res = ans = 0
+visited = [0]*(N+1)
+visited[1] = 1
+dfs(1, 0)
+res = 0
+visited = [0]*(N+1)
+visited[ans] = 1
+dfs(ans, 0)
+print(res)
 ```
 
 
