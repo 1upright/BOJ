@@ -1166,7 +1166,51 @@ print(res)
 ## 31) [2096. 내려가기](https://www.acmicpc.net/problem/2096)
 
 ```python
+# 메모리 초과
+import sys
+input = sys.stdin.readline
 
+N = int(input())
+arr = [list(map(int, input().split())) for _ in range(N)]
+min_dp = [[999999]*N for _ in range(N)]
+max_dp = [[0]*N for _ in range(N)]
+min_dp[0] = max_dp[0] = arr[0]
+for i in range(1, N):
+    min_dp[i][0] = min(min_dp[i-1][0], min_dp[i-1][1]) + arr[i][0]
+    min_dp[i][1] = min(min_dp[i-1]) + arr[i][1]
+    min_dp[i][2] = min(min_dp[i-1][1], min_dp[i-1][2]) + arr[i][2]
+    max_dp[i][0] = max(max_dp[i-1][0], max_dp[i-1][1]) + arr[i][0]
+    max_dp[i][1] = max(max_dp[i-1]) + arr[i][1]
+    max_dp[i][2] = max(max_dp[i-1][1], max_dp[i-1][2]) + arr[i][2]
+
+print(max(max_dp[N-1]), min(min_dp[N-1]))
+
+# 정답
+import sys
+input = sys.stdin.readline
+from copy import deepcopy
+
+N = int(input())
+
+dp = [[0]*3, [0]*3]
+tmp = [[0]*3, [0]*3]
+
+for i in range(N):
+    a, b, c = map(int, input().split())
+    tmp[0][0] = a + max(dp[0][0], dp[0][1])
+    tmp[0][1] = b + max(dp[0])
+    tmp[0][2] = c + max(dp[0][1], dp[0][2])
+    tmp[1][0] = a + min(dp[1][0], dp[1][1])
+    tmp[1][1] = b + min(dp[1])
+    tmp[1][2] = c + min(dp[1][1], dp[1][2])
+    dp = deepcopy(tmp)
+
+print(max(dp[0]), min(dp[1]))
+
+# 숏코딩
+a=b=c=d=e=f=0;m,M=min,max
+for _ in range(int(input())):x,y,z=map(int,input().split());a,b,c,d,e,f=M(a,b)+x,M(a,b,c)+y,M(b,c)+z,m(d,e)+x,m(d,e,f)+y,m(e,f)+z
+print(M(a,b,c),m(d,e,f))
 ```
 
 
@@ -1174,7 +1218,68 @@ print(res)
 ## 32) [2206. 벽 부수고 이동하기](https://www.acmicpc.net/problem/2206)
 
 ```python
+# 시간 초과
+import sys
+input = sys.stdin.readline
+from collections import deque
 
+def bfs():
+    global res
+    visited = [[0]*M for _ in range(N)]
+    visited[0][0] = 1
+    q = deque([(0, 0)])
+    while q:
+        x, y = q.popleft()
+        if x == N-1 and y == M-1:
+            if res > visited[x][y]:
+                res = visited[x][y]
+            return
+        for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            nx, ny = x+dx, y+dy
+            if 0<=nx<N and 0<=ny<M and not arr[nx][ny] and not visited[nx][ny]:
+                visited[nx][ny] = visited[x][y] + 1
+                q.append((nx, ny))
+
+N, M = map(int, input().split())
+arr = [list(map(int, input().strip())) for _ in range(N)]
+
+res = 999999
+for i in range(N):
+    for j in range(M):
+        if arr[i][j]:
+            arr[i][j] = 0
+            bfs()
+            arr[i][j] = 1
+    
+print(res if res<999999 else -1)
+
+# 정답
+import sys
+input = sys.stdin.readline
+from collections import deque
+
+def bfs():
+    q = deque([(0, 0, 0)])
+    while q:
+        x, y, z = q.popleft()
+        if x == N-1 and y == M-1:
+            return visited[x][y][z]
+        for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            nx, ny = x+dx, y+dy
+            if 0<=nx<N and 0<=ny<M:
+                if not arr[nx][ny] and not visited[nx][ny][z]:
+                    visited[nx][ny][z] = visited[x][y][z] + 1
+                    q.append((nx, ny, z))
+                elif arr[nx][ny] == 1 and not z:
+                    visited[nx][ny][1] = visited[x][y][z] + 1
+                    q.append((nx, ny, 1))
+    return -1
+
+N, M = map(int, input().split())
+arr = [list(map(int, input().strip())) for _ in range(N)]
+visited = [[[0]*2 for _ in range(M)] for _ in range(N)]
+visited[0][0][0] = 1
+print(bfs())
 ```
 
 
