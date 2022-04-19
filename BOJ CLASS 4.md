@@ -1287,7 +1287,23 @@ print(bfs())
 ## 33) [2448. 별 찍기 - 11](https://www.acmicpc.net/problem/2448)
 
 ```python
+def dnc(i, j, x):
+    if x == 3:
+        star[i][j] = '*'
+        star[i+1][j-1] = star[i+1][j+1] = '*'
+        star[i+2][j-2:j+3] = ['*']*5
+        return
 
+    y = x//2
+    dnc(i, j, y)
+    dnc(i+y, j-y, y)
+    dnc(i+y, j+y, y)
+
+N = int(input())
+star = [[' ']*(N*2-1) for _ in range(N)]
+dnc(0, N-1, N)
+for s in star:
+    print(''.join(s))
 ```
 
 
@@ -1295,7 +1311,44 @@ print(bfs())
 ## 34) [2638. 치즈](https://www.acmicpc.net/problem/2638)
 
 ```python
+import sys
+input = sys.stdin.readline
+from collections import deque
 
+def bfs():
+    q = deque([(0, 0)])
+    visited = [[0]*M for _ in range(N)]
+    visited[0][0] = 1
+    while q:
+        i, j = q.popleft()
+        for di, dj in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+            ni, nj = i+di, j+dj
+            if 0<=ni<N and 0<=nj<M and not visited[ni][nj]:
+                if arr[ni][nj]:
+                    arr[ni][nj] += 1
+                else:
+                    visited[ni][nj] = 1
+                    q.append((ni, nj))
+
+N, M = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(N)]
+cnt = 0
+while 1:
+    bfs()
+    flag = 0
+    for i in range(N):
+        for j in range(M):
+            if arr[i][j] >= 3:
+                arr[i][j] = 0
+                flag = 1
+            if arr[i][j] == 2:
+                arr[i][j] = 1
+    if flag:
+        cnt += 1
+    else:
+        break
+
+print(cnt)
 ```
 
 
