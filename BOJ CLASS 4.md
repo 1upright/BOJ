@@ -1356,7 +1356,54 @@ print(cnt)
 ## 35) [9935. 문자열 폭발](https://www.acmicpc.net/problem/9935)
 
 ```python
+# 시간 초과
+import sys
+input = sys.stdin.readline
 
+target = input().strip()
+bomb = input().strip()
+s = []
+N = len(bomb)
+
+for x in target:
+    s.append(x)
+    if x == bomb[-1] and s[-N:] == list(bomb):
+        s = s[:-N]
+
+print(''.join(s) if s else 'FRULA')
+
+# 정답
+import sys
+input = sys.stdin.readline
+
+target = input().strip()
+bomb = input().strip()
+s = []
+N = len(bomb)
+
+for x in target:
+    s.append(x)
+    if x == bomb[-1] and s[-N:] == list(bomb):
+        for _ in range(N):
+            s.pop()
+
+print(''.join(s) if s else 'FRULA')
+
+# 좀 더 빠른 방법
+import sys
+input = sys.stdin.readline
+
+target = input().strip()
+bomb = input().strip()
+s = []
+N = len(bomb)
+
+for x in target:
+    s.append(x)
+    if x == bomb[-1] and s[-N:] == list(bomb):
+        del s[-N:]
+
+print(''.join(s) if s else 'FRULA')
 ```
 
 
