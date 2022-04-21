@@ -1411,7 +1411,63 @@ print(''.join(s) if s else 'FRULA')
 ## 36) [10830. 행렬 제곱](https://www.acmicpc.net/problem/10830)
 
 ```python
+# 시간 초과
+import sys
+input = sys.stdin.readline
+from copy import deepcopy
 
+N, B = map(int, input().split())
+A = [list(map(int, input().split())) for _ in range(N)]
+
+res = deepcopy(A)
+for _ in range(B-1):
+    tmp = [[0]*N for _ in range(N)]
+    for i in range(N):
+        for j in range(N):
+            for k in range(N):
+                tmp[i][j] += res[i][k]*A[k][j]
+    res = deepcopy(tmp)
+
+for i in range(N):
+    for j in range(N):
+        res[i][j] %= 1000
+
+for r in res:
+    print(*r)
+    
+# 정답
+import sys
+input = sys.stdin.readline
+
+def mul(X, Y):
+    Z = [[0]*N for _ in range(N)]
+    for i in range(N):
+        for j in range(N):
+            for k in range(N):
+                Z[i][j] += X[i][k]*Y[k][j]
+            Z[i][j] %= 1000
+    return Z
+
+def dnc(A, B):
+    if B == 1:
+        return A
+
+    tmp = dnc(A, B//2)
+    if B%2:
+        return mul(mul(tmp, tmp), A)
+    else:
+        return mul(tmp, tmp)
+
+N, B = map(int, input().split())
+A = [list(map(int, input().split())) for _ in range(N)]
+
+res = dnc(A, B)
+for i in range(N):
+    for j in range(N):
+        res[i][j] %= 1000
+
+for r in res:
+    print(*r)
 ```
 
 
