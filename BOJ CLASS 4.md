@@ -1475,7 +1475,34 @@ for r in res:
 ## 37) [11404. 플로이드](https://www.acmicpc.net/problem/11404)
 
 ```python
+import sys
+input = sys.stdin.readline
 
+N = int(input())
+M = int(input())
+INF = 10000000
+
+arr = [[INF]*N for _ in range(N)]
+for i in range(N):
+    arr[i][i] = 0
+
+for _ in range(M):
+    u, v, w = map(int, input().split())
+    arr[u-1][v-1] = min(arr[u-1][v-1], w)
+
+for k in range(N):
+    for i in range(N):
+        for j in range(N):
+            if arr[i][j] > arr[i][k] + arr[k][j]:
+                arr[i][j] = arr[i][k] + arr[k][j]
+
+for i in range(N):
+    for j in range(N):
+        if arr[i][j] == INF:
+            arr[i][j] = 0
+
+for a in arr:
+    print(*a)
 ```
 
 
@@ -1483,7 +1510,26 @@ for r in res:
 ## 38) [13172. Σ](https://www.acmicpc.net/problem/13172)
 
 ```python
+# 인터넷 참고
+import sys
+input = sys.stdin.readline
 
+def mul(x, n):
+    if n == 1:
+        return x%key
+    if n%2:
+        return x*mul(x, n-1)%key
+    tmp = mul(x, n//2)
+    return tmp**2%key
+
+key = 1000000007
+N = int(input())
+s = 0
+for _ in range(N):
+    a, b = map(int, input().split())
+    s += b*mul(a, key-2)%key
+    s %= key
+print(s)
 ```
 
 
@@ -1491,7 +1537,36 @@ for r in res:
 ## 39) [14938. 서강그라운드](https://www.acmicpc.net/problem/14938)
 
 ```python
+import sys
+input = sys.stdin.readline
 
+n, m, r = map(int, input().split())
+item = list(map(int, input().split()))
+arr = [[1500]*n for _ in range(n)]
+for i in range(n):
+    arr[i][i] = 0
+
+for _ in range(r):
+    u, v, w = map(int, input().split())
+    arr[u-1][v-1] = w
+    arr[v-1][u-1] = w
+
+for k in range(n):
+    for i in range(n):
+        for j in range(n):
+            if arr[i][j] > arr[i][k] + arr[k][j]:
+                arr[i][j] = arr[i][k] + arr[k][j]
+
+res = 0
+for i in range(n):
+    cnt = 0
+    for j in range(n):
+        if arr[i][j] <= m:
+            cnt += item[j]
+    if res < cnt:
+        res = cnt
+
+print(res)
 ```
 
 
