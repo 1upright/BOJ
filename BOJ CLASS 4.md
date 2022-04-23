@@ -1574,7 +1574,70 @@ print(res)
 ## 40) [17144. 미세먼지 안녕!](https://www.acmicpc.net/problem/17144)
 
 ```python
+# pypy만
 
+import sys
+input = sys.stdin.readline
+from copy import deepcopy
+
+R, C, T = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(R)]
+for i in range(R):
+    if arr[i][0] == -1:
+        up, down = i, i+1
+        break
+
+for _ in range(T):
+    tmp = [[0]*C for _ in range(R)]
+    for i in range(R):
+        for j in range(C):
+            if arr[i][j] == -1:
+                tmp[i][j] = -1
+
+            if arr[i][j] > 0:
+                x = arr[i][j]
+                cnt = 0
+                for di, dj in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                    ni, nj = i+di, j+dj
+                    if 0<=ni<R and 0<=nj<C and arr[ni][nj] != -1:
+                        tmp[ni][nj] += x//5
+                        cnt += 1
+                tmp[i][j] += x - x//5*cnt
+
+    di = [0, -1, 0, 1]
+    dj = [1, 0, -1, 0]
+    i, j = up, 1
+    d = flag = 0
+    while 1:
+        if i == up and j == 0:
+            break
+        ni, nj = i+di[d], j+dj[d]
+        if ni<0 or ni>=R or nj<0 or nj>=C:
+            d += 1
+            continue
+        tmp[i][j], flag = flag, tmp[i][j]
+        i, j = ni, nj
+
+    di = [0, 1, 0, -1]
+    dj = [1, 0, -1, 0]
+    i, j = down, 1
+    d = flag = 0
+    while 1:
+        if i == down and j == 0:
+            break
+        ni, nj = i+di[d], j+dj[d]
+        if ni<0 or ni>=R or nj<0 or nj>=C:
+            d += 1
+            continue
+        tmp[i][j], flag = flag, tmp[i][j]
+        i, j = ni, nj
+
+    arr = deepcopy(tmp)
+
+cnt = 2
+for i in range(R):
+    cnt += sum(arr[i])
+print(cnt)
 ```
 
 
@@ -1582,7 +1645,39 @@ print(res)
 ## 41) [1167. 트리의 지름](https://www.acmicpc.net/problem/1167)
 
 ```python
+import sys
+input = sys.stdin.readline
+from collections import deque
 
+def bfs(x):
+    visited = [-1]*(V+1)
+    q = deque([x])
+    visited[x] = 0
+    res = [0, 0]
+
+    while q:
+        t = q.popleft()
+        for v, w in adj[t]:
+            if visited[v] == -1:
+                visited[v] = visited[t] + w
+                q.append(v)
+                if res[0] < visited[v]:
+                    res[0] = visited[v]
+                    res[1] = v
+    return res
+
+V = int(input())
+adj = [[] for _ in range(V+1)]
+for _ in range(V):
+    data = list(map(int, input().split()))
+    u = data[0]
+    for i in range(len(data)//2-1):
+        v = data[i*2+1]
+        w = data[i*2+2]
+        adj[u].append((v, w))
+
+dis, node = bfs(1)
+print(bfs(node)[0])
 ```
 
 
