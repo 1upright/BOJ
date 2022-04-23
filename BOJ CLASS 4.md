@@ -1685,7 +1685,44 @@ print(bfs(node)[0])
 ## 42) [1238. 파티](https://www.acmicpc.net/problem/1238)
 
 ```python
+import sys
+input = sys.stdin.readline
+import heapq
 
+def dijkstra(s, N, adj):
+    D = [INF]*(N+1)
+    D[s] = 0
+    heap = []
+    heapq.heappush(heap, (0, s))
+    while heap:
+        val, i = heapq.heappop(heap)
+        for v, w in adj[i]:
+            tmp = w + val
+            if D[v] > tmp:
+                D[v] = tmp
+                heapq.heappush(heap, (tmp, v))
+    return D
+
+N, M, X = map(int, input().split())
+INF = 999999
+adj1 = [[] for _ in range(N+1)]
+adj2 = [[] for _ in range(N+1)]
+
+for _ in range(M):
+    x, y, c = map(int, input().split())
+    adj1[x].append((y, c))
+    adj2[y].append((x, c))
+
+D1 = dijkstra(X, N, adj1)
+D2 = dijkstra(X, N, adj2)
+
+res = 0
+for i in range(1, N+1):
+    tmp = D1[i] + D2[i]
+    if res < tmp:
+        res = tmp
+
+print(res)
 ```
 
 
@@ -1693,7 +1730,69 @@ print(bfs(node)[0])
 ## 43) [1865. 웜홀](https://www.acmicpc.net/problem/1865)
 
 ```python
+# 오답 - 왜 틀린지 모르겠음
+import sys
+input = sys.stdin.readline
 
+def check():
+    for i in range(N):
+        for j in range(N):
+            if arr[i][j] + arr[j][i] < 0:
+                return 'YES'
+    return 'NO'
+
+for _ in range(int(input())):
+    N, M, W = map(int, input().split())
+    arr = [[9999999]*N for _ in range(N)]
+    for __ in range(M):
+        S, E, T = map(int, input().split())
+        arr[S-1][E-1] = T
+        arr[E-1][S-1] = T
+    for __ in range(W):
+        S, E, T = map(int, input().split())
+        arr[S-1][E-1] = -T
+    for i in range(N):
+        arr[i][i] = 0
+
+    for k in range(N):
+        for i in range(N):
+            for j in range(N):
+                if arr[i][j] > arr[i][k] + arr[k][j]:
+                    arr[i][j] = arr[i][k] + arr[k][j]
+
+    print(check())
+   
+# 정답 - 인터넷 검색 : 벨만 포드 알고리즘
+import sys
+input = sys.stdin.readline
+
+def bellman_ford(start):
+    dist = [99999999]*(N+1)
+    dist[start] = 0
+    for _ in range(1, N+1):
+        for s, e, t in data:
+            if dist[e] > dist[s] + t:
+                dist[e] = dist[s] + t
+
+    for s, e, t in data:
+        if dist[e] > dist[s] + t:
+            return 'YES'
+    return 'NO'
+
+for _ in range(int(input())):
+    N, M, W = map(int, input().split())
+    data = []
+
+    for __ in range(M):
+        S, E, T = map(int, input().split())
+        data.append((S, E, T))
+        data.append((E, S, T))
+
+    for __ in range(W):
+        S, E, T = map(int, input().split())
+        data.append((S, E, -T))
+
+    print(bellman_ford(1))
 ```
 
 
