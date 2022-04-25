@@ -1800,7 +1800,27 @@ for _ in range(int(input())):
 ## 44) [1918. 후위 표기식](https://www.acmicpc.net/problem/1918)
 
 ```python
+exp = input()
+s = []
+res = ''
+icp = {'+': 1, '-': 1, '*': 2, '/': 2, '(': 3}
+isp = {'+': 1, '-': 1, '*': 2, '/': 2, '(': 0}
 
+for x in exp:
+    if x == ')':
+        while isp[s[-1]]:
+            res += s.pop()
+        s.pop()
+    elif x in ('+', '-', '*', '/', '('):
+        while s and isp[s[-1]] >= icp[x]:
+            res += s.pop()
+        s.append(x)
+    else:
+        res += x
+while s:
+    res += s.pop()
+    
+print(res)
 ```
 
 
@@ -1808,7 +1828,28 @@ for _ in range(int(input())):
 ## 45) [11054. 가장 긴 바이토닉 부분 수열](https://www.acmicpc.net/problem/11054)
 
 ```python
+import sys
+input = sys.stdin.readline
 
+N = int(input())
+arr = list(map(int, input().split()))
+dp1 = [1]*N
+dp2 = [1]*N
+
+for i in range(1, N):
+    for j in range(i):
+        if arr[j] < arr[i]:
+            dp1[i] = max(dp1[i], dp1[j]+1)
+
+for i in range(N-2, -1, -1):
+    for j in range(N-1, i, -1):
+        if arr[j] < arr[i]:
+            dp2[i] = max(dp2[i], dp2[j]+1)
+
+res = 0
+for i in range(N):
+    res = max(res, dp1[i]+dp2[i])
+print(res-1)
 ```
 
 
