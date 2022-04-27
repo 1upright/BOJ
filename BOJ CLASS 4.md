@@ -1857,7 +1857,39 @@ print(res-1)
 ## 46) [11779. 최소비용 구하기 2](https://www.acmicpc.net/problem/11779)
 
 ```python
+# 처음에 res를 str으로 받고 출력할때 *list(res) 했더니 의문의 오답이었음
+import sys
+input = sys.stdin.readline
+from heapq import *
 
+def dijkstra(s, e):
+    D = [INF]*(N+1)
+    D[s] = 0
+    heap = []
+    heappush(heap, (0, s, [s]))
+    while heap:
+        val, i, res = heappop(heap)
+        if i == e:
+            return D[e], res
+        for v, w in adj[i]:
+            tmp = val + w
+            if D[v] > tmp:
+                D[v] = tmp
+                heappush(heap, (tmp, v, res + [v]))
+
+N = int(input())
+M = int(input())
+adj = [[] for _ in range(N+1)]
+for _ in range(M):
+    u, v, w = map(int, input().split())
+    adj[u].append((v, w))
+s, e = map(int, input().split())
+INF = 99999999
+
+x, r = dijkstra(s, e)
+print(x)
+print(len(r))
+print(*r)
 ```
 
 
@@ -1865,14 +1897,77 @@ print(res-1)
 ## 47) [2263. 트리의 순회](https://www.acmicpc.net/problem/2263)
 
 ```python
+# 인터넷 참고
+import sys
+input = sys.stdin.readline
+sys.setrecursionlimit(10**6)
 
+def make_pre_order(iS, iE, pS, pE):
+    if iS > iE or pS > pE:
+        return
+    tmp = post_order[pE]
+    pre_order.append(tmp)
+    make_pre_order(iS, index[tmp] - 1, pS, index[tmp] + pS - iS - 1)
+    make_pre_order(index[tmp] + 1, iE, index[tmp] + pE - iE, pE - 1)
+
+n = int(input())
+in_order = list(map(int, input().split()))
+post_order = list(map(int, input().split()))
+pre_order = []
+index = [0]*(n+1)
+for i in range(n):
+    index[in_order[i]] = i
+
+make_pre_order(0, n-1, 0, n-1)
+print(*pre_order)
 ```
 
 
 
 ## 48) [11444. 피보나치 수 6](https://www.acmicpc.net/problem/11444)
 
-```python
+> https://www.acmicpc.net/blog/view/28
 
+```python
+# 시간 초과
+def fibo(x):
+    if x == 1:
+        return 1
+    if x == 2:
+        return 1
+    if x % 2:
+        a, b = fibo(x//2), fibo(x//2+1)
+        return (a**2+b**2)%key
+    a, b = fibo(x//2-1), fibo(x//2)
+    return (2*a*b+b**2)%key
+
+n = int(input())
+key = 1000000007
+print(fibo(n))
+
+# 정답
+def mul(A, B):
+    Z = [[0, 0], [0, 0]]
+    for i in range(2):
+        for j in range(2):
+            e = 0
+            for k in range(2):
+                e += A[i][k] * B[k][j]
+            Z[i][j] = e % key
+    return Z
+
+def foo(mat, x):
+    if x == 1:
+        return mat
+    tmp = foo(mat, x//2)
+    tmp2 = mul(tmp, tmp)
+    if x % 2:
+        return mul(tmp2, mat)
+    return tmp2
+
+n = int(input())
+key = 1000000007
+mat = [[1, 1], [1, 0]]
+print(foo(mat, n)[0][1])
 ```
 
