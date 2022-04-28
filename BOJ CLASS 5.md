@@ -3,6 +3,41 @@
 ## 1) [12852. 1로 만들기 2](https://www.acmicpc.net/problem/12852)
 
 ```python
+# pypy에서만 정답
+from collections import deque
+
+X = int(input())
+q = deque([[X]])
+while q:
+    li = q.popleft()
+    v = li[-1]
+    if v == 1:
+        res = li
+        break
+    if not v%3:
+        q.append(li + [v//3])
+    if not v%2:
+        q.append(li + [v//2])
+    q.append(li + [v-1])
+
+print(len(res)-1)
+print(*res)
+
+# python에서도 정답
+X = int(input())
+dp = [[] for _ in range(X+1)]
+dp[1].append(1)
+
+for i in range(2, X+1):
+    dp[i] = dp[i-1] + [i]
+    if not i%2 and len(dp[i]) > len(dp[i//2])+1:
+        dp[i] = dp[i//2] + [i]
+    if not i%3 and len(dp[i]) > len(dp[i//3])+1:
+        dp[i] = dp[i//3] + [i]
+
+tmp = dp[X]
+print(len(tmp)-1)
+print(*tmp[::-1])
 ```
 
 
@@ -10,7 +45,16 @@
 ## 2) [2166. 다각형의 면적](https://www.acmicpc.net/problem/2166)
 
 ```python
+import sys
+input = sys.stdin.readline
 
+N = int(input())
+data = [tuple(map(int, input().split())) for _ in range(N)]
+res = 0
+for i in range(N):
+    res += data[i][0]*data[i-1][1]
+    res -= data[i][1]*data[i-1][0]
+print(round(abs(res)/2,1))
 ```
 
 
@@ -18,7 +62,45 @@
 ## 3) [2467. 용액](https://www.acmicpc.net/problem/2467)
 
 ```python
+# 시간 초과
+import sys
+input = sys.stdin.readline
 
+N = int(input())
+sols = list(map(int, input().split()))
+tmp = 2000000000
+x = y = 0
+for i in range(N-1):
+    for j in range(i+1, N):
+        a, b = sols[i], sols[j]
+        if tmp > abs(a+b):
+            tmp = abs(a+b)
+            x, y = a, b
+print(x, y)
+
+# 정답
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+sols = list(map(int, input().split()))
+res = 2000000000
+l, r = 0, N-1
+while l < r:
+    tmp = sols[l] + sols[r]
+
+    if res > abs(tmp):
+        res = abs(tmp)
+        x, y = l, r
+
+    if tmp > 0:
+        r -= 1
+    elif tmp < 0:
+        l += 1
+    else:
+        break
+
+print(sols[x], sols[y])
 ```
 
 
