@@ -108,7 +108,69 @@ print(sols[x], sols[y])
 ## 4) [1197. 최소 스패닝 트리](https://www.acmicpc.net/problem/1197)
 
 ```python
+# 시간 초과(배운 Kruskal)
+import sys
+input = sys.stdin.readline
 
+def find_set(x):
+    while x!=rep[x]:
+        x = rep[x]
+    return x
+
+def union(x, y):
+    rep[find_set(y)] = find_set(x)
+
+V, E = map(int, input().split())
+edge = []
+for _ in range(E):
+    A, B, C = map(int, input().split())
+    edge.append((C, B, A))
+edge.sort()
+rep = list(range(V+1))
+N = V + 1
+cnt = 0
+res = 0
+for w, v, u in edge:
+    if find_set(v) != find_set(u):
+        cnt += 1
+        union(u, v)
+        res += w
+        if cnt == N-1:
+            break
+print(res)
+
+# 정답 - 인터넷 참고
+import sys
+input = sys.stdin.readline
+
+def union(a, b):
+    a = find(a)
+    b = find(b)
+    if b < a:
+        rep[a] = b
+    else:
+        rep[b] = a
+
+def find(a):
+    if a == rep[a]:
+        return a
+    rep[a] = find(rep[a])
+    return rep[a]
+
+V, E = map(int, input().split())
+edge = []
+for _ in range(E):
+    A, B, C = map(int, input().split())
+    edge.append((C, B, A))
+edge.sort()
+rep = list(range(V+1))
+
+res = 0
+for w, v, u in edge:
+    if find(u) != find(v):
+        union(u, v)
+        res += w
+print(res)
 ```
 
 
@@ -116,7 +178,41 @@ print(sols[x], sols[y])
 ## 5) [1647. 도시 분할 계획](https://www.acmicpc.net/problem/1647)
 
 ```python
+import sys
+input = sys.stdin.readline
 
+def find(a):
+    if a == rep[a]:
+        return a
+    rep[a] = find(rep[a])
+    return rep[a]
+
+def union(a, b):
+    a = find(a)
+    b = find(b)
+    if a > b:
+        rep[a] = b
+    else:
+        rep[b] = a
+
+N, M = map(int, input().split())
+edge = []
+for _ in range(M):
+    A, B, C = map(int, input().split())
+    edge.append((C, B, A))
+edge.sort()
+
+rep = list(range(N+1))
+res = cnt = 0
+for w, u, v in edge:
+    if find(u) != find(v):
+        union(u, v)
+        res += w
+        cnt += 1
+    if cnt == N-2:
+        break
+
+print(res)
 ```
 
 
@@ -124,7 +220,51 @@ print(sols[x], sols[y])
 ## 6) [1806. 부분합](https://www.acmicpc.net/problem/1806)
 
 ```python
+# 시간 초과
+import sys
+input = sys.stdin.readline
 
+N, S = map(int, input().split())
+seq = list(map(int, input().split()))
+
+res = 100001
+for i in range(N):
+    tmp = cnt = 0
+    for j in range(i, N):
+        tmp += seq[j]
+        cnt += 1
+        if tmp > S:
+            if res > cnt:
+                res = cnt
+            break
+
+print(0 if res == 100001 else res)
+
+# 정답
+import sys
+input = sys.stdin.readline
+
+N, S = map(int, input().split())
+seq = list(map(int, input().split()))
+sum_seq = [0]*(N+1)
+for i in range(1, N+1):
+    sum_seq[i] = sum_seq[i-1] + seq[i-1]
+
+s, e = 0, 1
+res = 100001
+while s < N:
+    if sum_seq[e] - sum_seq[s] >= S:
+        if res > e - s:
+            res = e - s
+        s += 1
+
+    else:
+        if e < N:
+            e += 1
+        else:
+            s += 1
+
+print(0 if res == 100001 else res)
 ```
 
 
