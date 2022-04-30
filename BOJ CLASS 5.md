@@ -272,7 +272,75 @@ print(0 if res == 100001 else res)
 ## 7) [1987. 알파벳](https://www.acmicpc.net/problem/1987)
 
 ```python
+# 시간 초과
+import sys
+input = sys.stdin.readline
 
+def dfs(i, j, s):
+    global res
+    if res < s:
+        res = s
+    for di, dj in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+        ni, nj = i+di, j+dj
+        if 0<=ni<R and 0<=nj<C and not visited[dic[arr[ni][nj]]]:
+            visited[dic[arr[ni][nj]]] = 1
+            dfs(ni, nj, s+1)
+            visited[dic[arr[ni][nj]]] = 0
+
+R, C = map(int, input().split())
+arr = [list(input().strip()) for _ in range(R)]
+
+dic = {}
+for i in range(26):
+    dic[chr(i+65)] = i
+visited = [0]*26
+visited[dic[arr[0][0]]] = 1
+
+res = 0
+dfs(0, 0, 1)
+print(res)
+
+# pypy에서만
+import sys
+input = sys.stdin.readline
+
+def dfs(i, j, s):
+    global res
+    if res < s:
+        res = s
+    for di, dj in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+        ni, nj = i+di, j+dj
+        if 0<=ni<R and 0<=nj<C and not visited[arr[ni][nj]]:
+            visited[arr[ni][nj]] = 1
+            dfs(ni, nj, s+1)
+            visited[arr[ni][nj]] = 0
+
+R, C = map(int, input().split())
+arr = [list(map(lambda x : ord(x)-65 , input().strip())) for _ in range(R)]
+visited = [0]*26
+visited[arr[0][0]] = 1
+
+res = 0
+dfs(0, 0, 1)
+print(res)
+
+# 정답 - set을 이용하여 중복 제거
+# append로 한다면 중복이 수없이 많이 일어나는 경우가 생김
+import sys
+input = sys.stdin.readline
+
+R, C = map(int, input().split())
+arr = [list(input().strip()) for _ in range(R)]
+res = 0
+q = set([(0, 0, arr[0][0])])
+while q:
+    i, j, s = q.pop()
+    for di, dj in [(1, 0), (0, 1), (-1, 0), (0, -1)]:
+        ni, nj = i+di, j+dj
+        if 0<=ni<R and 0<=nj<C and arr[ni][nj] not in s:
+            q.add((ni, nj, s+arr[ni][nj]))
+            res = max(res, len(s))
+print(res+1)
 ```
 
 
@@ -280,7 +348,87 @@ print(0 if res == 100001 else res)
 ## 8) [2239. 스도쿠](https://www.acmicpc.net/problem/2239)
 
 ```python
+# 시간 초과
+import sys
+input = sys.stdin.readline
 
+arr = [list(map(int, input().strip())) for _ in range(9)]
+tmp = set(range(1, 10))
+
+cnt = 0
+for i in range(9):
+    for j in range(9):
+        if arr[i][j]:
+            cnt += 1
+
+while cnt < 81:
+    for i in range(9):
+        for j in range(9):
+            if not arr[i][j]:
+                si, sj = i//3*3, j//3*3
+                check = set(arr[i])
+                for x in range(9):
+                    check.add(arr[x][j])
+                for x in range(3):
+                    for y in range(3):
+                        check.add(arr[si+x][sj+y])
+                if len(tmp - check) == 1:
+                    arr[i][j] = list(tmp - check)[0]
+                    cnt += 1
+
+for i in range(9):
+    for j in range(9):
+        print(arr[i][j], end='')
+    print()
+    
+# pypy에서만 정답
+import sys
+input = sys.stdin.readline
+
+def c1(i, k):
+    for j in range(9):
+        if arr[i][j] == k:
+            return 0
+    return 1
+
+def c2(j, k):
+    for i in range(9):
+        if arr[i][j] == k:
+            return 0
+    return 1
+
+def c3(i, j, k):
+    ni, nj = i//3*3, j//3*3
+    for di in range(3):
+        for dj in range(3):
+            if arr[ni+di][nj+dj] == k:
+                return 0
+    return 1
+
+def dfs(s):
+    if s == len(target):
+        for i in range(9):
+            for j in range(9):
+                print(arr[i][j], end='')
+            print()
+        exit()
+
+    i, j = target[s]
+    for k in range(1, 10):
+        if c1(i, k) and c2(j, k) and c3(i, j, k):
+            arr[i][j] = k
+            dfs(s+1)
+            arr[i][j] = 0
+
+arr = [list(map(int, input().strip())) for _ in range(9)]
+tmp = set(range(1, 10))
+
+target = []
+for i in range(9):
+    for j in range(9):
+        if not arr[i][j]:
+            target.append((i, j))
+dfs(0)
 ```
 
 
