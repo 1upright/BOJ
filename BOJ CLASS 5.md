@@ -436,7 +436,33 @@ dfs(0)
 ## 9) [2473. 세 용액](https://www.acmicpc.net/problem/2473)
 
 ```python
+# pypy에서만 정답
+import sys
+input = sys.stdin.readline
 
+N = int(input())
+sols = list(map(int, input().split()))
+sols.sort()
+res = 3000000001
+
+for l in range(N-2):
+    m, r = l+1, N-1
+    while m < r:
+        tmp = sols[l]+sols[m]+sols[r]
+
+        if res > abs(tmp):
+            res = abs(tmp)
+            ans = [sols[l], sols[m], sols[r]]
+
+        if tmp > 0:
+            r -= 1
+        elif tmp < 0:
+            m += 1
+        else:
+            print(*ans)
+            exit()
+
+print(*ans)
 ```
 
 
@@ -444,7 +470,40 @@ dfs(0)
 ## 10) [4386. 별자리 만들기](https://www.acmicpc.net/problem/4386)
 
 ```python
+import sys
+input = sys.stdin.readline
 
+def union(a, b):
+    a = find(a)
+    b = find(b)
+    if b < a:
+        rep[a] = b
+    else:
+        rep[b] = a
+
+def find(a):
+    if a == rep[a]:
+        return a
+    rep[a] = find(rep[a])
+    return rep[a]
+
+N = int(input())
+star = [list(map(float, input().split())) for _ in range(N)]
+
+edge = []
+for i in range(N-1):
+    for j in range(i+1, N):
+        dis = ((star[i][0]-star[j][0])**2+(star[i][1]-star[j][1])**2)**0.5
+        edge.append((dis, j, i))
+edge.sort()
+
+rep = list(range(N))
+res = 0
+for w, u, v in edge:
+    if find(u) != find(v):
+        union(u, v)
+        res += w
+print(f'{res:.2f}')
 ```
 
 
@@ -452,7 +511,25 @@ dfs(0)
 ## 11) [9252. LCS 2](https://www.acmicpc.net/problem/9252)
 
 ```python
+import sys
+s1 = list(sys.stdin.readline().rstrip())
+s2 = list(sys.stdin.readline().rstrip())
+N, M = len(s1), len(s2)
+arr = [['']*(M+1) for _ in range(N+1)]
 
+for i in range(1, N+1):
+    for j in range(1, M+1):
+        if s1[i-1] == s2[j-1]:
+            arr[i][j] = arr[i-1][j-1] + s1[i-1]
+        else:
+            if len(arr[i-1][j]) > len(arr[i][j-1]):
+                arr[i][j] = arr[i-1][j]
+            else:
+                arr[i][j] = arr[i][j-1]
+
+tmp = arr[N][M]
+print(len(tmp))
+print(tmp)
 ```
 
 
