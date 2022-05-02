@@ -537,7 +537,25 @@ print(tmp)
 ## 12) [17404. RGB거리 2](https://www.acmicpc.net/problem/17404)
 
 ```python
+import sys
+input = sys.stdin.readline
 
+N = int(input())
+arr = [list(map(int, input().split())) for _ in range(N)]
+res = 1000000
+
+for i in range(3):
+    dp = [[1000]*3 for _ in range(N)]
+    dp[0][i] = arr[0][i]
+    for j in range(1, N):
+        dp[j][0] = min(dp[j-1][1], dp[j-1][2]) + arr[j][0]
+        dp[j][1] = min(dp[j-1][0], dp[j-1][2]) + arr[j][1]
+        dp[j][2] = min(dp[j-1][0], dp[j-1][1]) + arr[j][2]
+    for j in range(3):
+        if i != j and res > dp[N-1][j]:
+            res = dp[N-1][j]
+
+print(res)
 ```
 
 
@@ -545,7 +563,29 @@ print(tmp)
 ## 13) [20040. 사이클 게임](https://www.acmicpc.net/problem/20040)
 
 ```python
+import sys
+input = sys.stdin.readline
 
+def find(x):
+    if x == rep[x]:
+        return x
+    rep[x] = find(rep[x])
+    return rep[x]
+
+N, M = map(int, input().split())
+rep = list(range(N))
+for i in range(M):
+    x, y = map(int, input().split())
+    x, y = find(x), find(y)
+    if x == y:
+        print(i+1)
+        exit()
+    else:
+        if x > y:
+            rep[x] = y
+        else:
+            rep[y] = x
+print(0)
 ```
 
 
