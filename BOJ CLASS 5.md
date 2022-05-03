@@ -593,7 +593,41 @@ print(0)
 ## 14) [1005. ACM Craft](https://www.acmicpc.net/problem/1005)
 
 ```python
+# 인터넷 참고 - 위상 정렬
+# https://freedeveloper.tistory.com/390
+import sys
+input = sys.stdin.readline
+from collections import deque
 
+T = int(input())
+for _ in range(T):
+    N, K = map(int, input().split())
+    time = [0] + list(map(int, input().split()))
+
+    graph = [[] for __ in range(N+1)]
+    indegree = [0]*(N+1)
+    for __ in range(K):
+        x, y = map(int, input().split())
+        graph[x].append(y)
+        indegree[y] += 1
+
+    q = deque()
+    dp = [0]*(N+1)
+    for i in range(1, N+1):
+        if not indegree[i]:
+            q.append(i)
+            dp[i] = time[i]
+
+    while q:
+        v = q.popleft()
+        for i in graph[v]:
+            indegree[i] -= 1
+            dp[i] = max(dp[v]+time[i], dp[i])
+            if not indegree[i]:
+                q.append(i)
+
+    W = int(input())
+    print(dp[W])
 ```
 
 
@@ -601,7 +635,63 @@ print(0)
 ## 15) [1644. 소수의 연속합](https://www.acmicpc.net/problem/1644)
 
 ```python
+# pypy에서만 정답
+N = int(input())
+prime = [0]
+for i in range(1, N+1):
+    if i == 1:
+        continue
+    for j in range(2, int(i**0.5)+1):
+        if not i%j:
+            break
+    else:
+        prime.append(i)
 
+M = len(prime)
+for i in range(M-1):
+    prime[i+1] += prime[i]
+
+s, e, cnt = 0, 1, 0
+while e < M:
+    tmp = prime[e] - prime[s]
+    if tmp > N:
+        s += 1
+        e = s+1
+    elif tmp < N:
+        e += 1
+    else:
+        cnt += 1
+        s += 1
+        e = s+1
+print(cnt)
+
+# python에서도 정답 - 소수 구하는거 인터넷 참고
+N = int(input())
+prime = [0]
+memo = [0, 0] + [1]*(N-1)
+for i in range(2, N+1):
+    if memo[i]:
+        prime.append(i)
+        for j in range(2*i, N+1, i):
+            memo[j] = 0
+
+M = len(prime)
+for i in range(M-1):
+    prime[i+1] += prime[i]
+
+s, e, cnt = 0, 1, 0
+while e < M:
+    tmp = prime[e] - prime[s]
+    if tmp > N:
+        s += 1
+        e = s+1
+    elif tmp < N:
+        e += 1
+    else:
+        cnt += 1
+        s += 1
+        e = s+1
+print(cnt)
 ```
 
 
