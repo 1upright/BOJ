@@ -699,7 +699,119 @@ print(cnt)
 ## 16) [2143. 두 배열의 합](https://www.acmicpc.net/problem/2143)
 
 ```python
+# 시간 초과
+import sys
+input = sys.stdin.readline
 
+T = int(input())
+n = int(input())
+A = [0] + list(map(int, input().split()))
+m = int(input())
+B = [0] + list(map(int, input().split()))
+for i in range(n):
+    A[i+1] += A[i]
+for i in range(m):
+    B[i+1] += B[i]
+
+new_A = []
+i, j = 0, 1
+while j < n+1:
+    new_A.append(A[j]-A[i])
+    if j < n:
+        j += 1
+    else:
+        i += 1
+        j = i+1
+new_A.sort()
+
+new_B = []
+i, j = 0, 1
+while j < m+1:
+    new_B.append(B[j]-B[i])
+    if j < m:
+        j += 1
+    else:
+        i += 1
+        j = i+1
+new_B.sort()
+
+a = len(new_A)
+b = len(new_B)
+print(new_A)
+print(new_B)
+
+cnt = 0
+i = j = 0
+while new_A[i]+new_B[j]<=T and i<a and j<b:
+    if new_A[i] + new_B[j] == T:
+        cnt += 1
+    elif new_A[i] + new_B[j] > T:
+        i += 1
+        j = i
+    else:
+        j += 1
+print(cnt)
+
+# 정답 - 인터넷 참고
+import sys
+input = sys.stdin.readline
+
+T = int(input())
+
+n = int(input())
+A = list(map(int, input().split()))
+check = {}
+
+for i in range(n):
+    tmp = A[i]
+    if tmp not in check:
+        check[tmp] = 1
+    else:
+        check[tmp] += 1
+    for j in range(i+1, n):
+        tmp += A[j]
+        if tmp not in check:
+            check[tmp] = 1
+        else:
+            check[tmp] += 1
+
+m = int(input())
+B = list(map(int, input().split()))
+
+res = 0
+for i in range(m):
+    tmp = B[i]
+    if T-tmp in check:
+        res += check[T-tmp]
+    for j in range(i+1, m):
+        tmp += B[j]
+        if T-tmp in check:
+            res += check[T-tmp]
+
+print(res)
+
+# defaultdict를 쓰는 방법도 있다고 한다
+import sys
+input = sys.stdin.readline
+from _collections import defaultdict
+
+T = int(input())
+check = defaultdict(int)
+
+n = int(input())
+A = list(map(int, input().split()))
+for i in range(n):
+    for j in range(i, n):
+        check[sum(A[i:j+1])] += 1
+
+m = int(input())
+B = list(map(int, input().split()))
+res = 0
+for i in range(m):
+    for j in range(i, m):
+        res += check[T-sum(B[i:j+1])]
+
+print(res)
 ```
 
 
@@ -707,7 +819,34 @@ print(cnt)
 ## 17) [2252. 줄 세우기](https://www.acmicpc.net/problem/2252)
 
 ```python
+import sys
+input = sys.stdin.readline
+from collections import deque
 
+N, M = map(int, input().split())
+indegree = [0]*(N+1)
+graph = [[] for _ in range(N+1)]
+
+for _ in range(M):
+    x, y = map(int, input().split())
+    indegree[y] += 1
+    graph[x].append(y)
+
+q = deque()
+for i in range(1, N+1):
+    if not indegree[i]:
+        q.append(i)
+
+res = []
+while q:
+    x = q.popleft()
+    res.append(x)
+    for y in graph[x]:
+        indegree[y] -= 1
+        if not indegree[y]:
+            q.append(y)
+
+print(*res)
 ```
 
 
