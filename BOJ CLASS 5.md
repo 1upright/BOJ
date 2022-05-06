@@ -854,7 +854,41 @@ print(*res)
 ## 18) [2342. Dance Dance Revolution](https://www.acmicpc.net/problem/2342) 
 
 ```python
+# 인터넷 참고
+import sys
+input = sys.stdin.readline
+sys.setrecursionlimit(10**6)
 
+def move(a, b):
+    if a == b: return 1
+    elif b == 0:
+        if a == 0:
+            return 0
+        return 2
+    elif (a-b)%2: return 3
+    else: return 4
+
+step = list(map(int, input().split()))
+step.pop()
+N = len(step)
+dp = [[[400001]*5 for _ in range(5)] for _ in range(N+1)]
+dp[-1][0][0] = 0
+
+for i in range(N):
+    for l in range(5):
+        for k in range(5):
+            dp[i][l][step[i]] = min(dp[i][l][step[i]], dp[i-1][l][k] + move(step[i], k))
+
+    for r in range(5):
+        for k in range(5):
+            dp[i][step[i]][r] = min(dp[i][step[i]][r], dp[i-1][k][r] + move(step[i], k))
+
+res = 400001
+for l in range(5):
+    for r in range(5):
+        if res > dp[N-1][l][r]:
+            res = dp[N-1][l][r]
+print(res)
 ```
 
 
