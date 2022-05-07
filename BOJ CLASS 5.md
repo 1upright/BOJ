@@ -896,7 +896,26 @@ print(res)
 ## 19) [7579. 앱](https://www.acmicpc.net/problem/7579)
 
 ```python
+# 인터넷 참고
+import sys
+input = sys.stdin.readline
 
+N, M = map(int, input().split())
+memory = [0] + list(map(int, input().split()))
+cost = [0] + list(map(int, input().split()))
+K = sum(cost)
+dp = [[0]*(K+1) for _ in range(N+1)]
+
+res = K
+for i in range(1, N+1):
+    for j in range(1, K+1):
+        if cost[i] > j:
+            dp[i][j] = dp[i-1][j]
+        else:
+            dp[i][j] = max(dp[i-1][j], dp[i-1][j-cost[i]]+memory[i])
+        if dp[i][j] >= M:
+            res = min(res, j)
+print(res if M else 0)
 ```
 
 
