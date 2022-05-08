@@ -923,7 +923,33 @@ print(res if M else 0)
 ## 20) [9466. 텀 프로젝트](https://www.acmicpc.net/problem/9466)
 
 ```python
+# 인터넷 참고
+import sys
+input = sys.stdin.readline
 
+def dfs(v):
+    global res
+    visited[v] = 1
+    tmp.append(v)
+    x = choice[v]
+
+    if visited[x]:
+        if x in tmp:
+            res += tmp[tmp.index(x):]
+            return
+    else:
+        dfs(x)
+
+for _ in range(int(input())):
+    N = int(input())
+    choice = [0] + list(map(int, input().split()))
+    visited = [0]*(N+1)
+    res = []
+    for i in range(1, N+1):
+        if not visited[i]:
+            tmp = []
+            dfs(i)
+    print(N-len(res))
 ```
 
 
@@ -931,7 +957,50 @@ print(res if M else 0)
 ## 21) [10942. 팰린드롬?](https://www.acmicpc.net/problem/10942)
 
 ```python
+# 시간 초과
+import sys
+input = sys.stdin.readline
 
+N = int(input())
+nums = [0] + list(map(int, input().split()))
+M = int(input())
+
+for _ in range(M):
+    i, j = map(int, input().split())
+    while i < j:
+        if nums[i] != nums[j]:
+            print(0)
+            break
+        else:
+            i += 1
+            j -= 1
+    else:
+        print(1)
+        
+# 정답
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+nums = list(map(int, input().split()))
+dp = [[0]*N for _ in range(N)]
+
+for i in range(N):
+    dp[i][i] = 1
+
+for i in range(N-1):
+    if nums[i] == nums[i+1]:
+        dp[i][i+1] = 1
+
+for k in range(2, N):
+    for i in range(N-k):
+        if nums[i] == nums[i+k] and dp[i+1][i+k-1]:
+            dp[i][i+k] = 1
+
+M = int(input())
+for _ in range(M):
+    x, y = map(int, input().split())
+    print(dp[x-1][y-1])
 ```
 
 
