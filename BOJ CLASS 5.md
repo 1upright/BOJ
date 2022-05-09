@@ -1007,8 +1007,29 @@ for _ in range(M):
 
 ## 22) [11049. 행렬 곱셈 순서](https://www.acmicpc.net/problem/11049)
 
-```python
+> [나무위키](https://namu.wiki/w/%EC%97%B0%EC%87%84%20%ED%96%89%EB%A0%AC%20%EA%B3%B1%EC%85%88%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98) 참고 실화냐
 
+```python
+# pypy에서만 정답
+
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+val = list(map(int, input().split()))
+for _ in range(N-1):
+    x, y = map(int, input().split())
+    val.append(y)
+
+dp = [[0]*N for _ in range(N)]
+for d in range(1, N):
+    for i in range(N-d):
+        j = i+d
+        dp[i][j] = 4294967296
+        for k in range(i, j):
+            dp[i][j] = min(dp[i][j], dp[i][k] + dp[k+1][j] + val[i]*val[k+1]*val[j+1])
+
+print(dp[0][N-1])
 ```
 
 
