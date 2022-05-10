@@ -1037,7 +1037,31 @@ print(dp[0][N-1])
 ## 23) [1007. 벡터 매칭](https://www.acmicpc.net/problem/1007)
 
 ```python
+import sys
+input = sys.stdin.readline
+from itertools import combinations
 
+for _ in range(int(input())):
+    N = int(input())
+    tot_x = tot_y = 0
+    coor = []
+    for __ in range(N):
+        x, y = map(int, input().split())
+        tot_x += x
+        tot_y += y
+        coor.append((x, y))
+
+    res = 1000000
+    combi = list(combinations(coor, N//2))
+    for com in combi[:len(combi)//2]:
+        tmp_x = tmp_y = 0
+        for x, y in com:
+            tmp_x += x
+            tmp_y += y
+        tmp = ((tot_x-tmp_x*2)**2 + (tot_y-tmp_y*2)**2)**0.5
+        if res > tmp:
+            res = tmp
+    print(res)
 ```
 
 
