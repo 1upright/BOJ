@@ -1069,7 +1069,29 @@ for _ in range(int(input())):
 ## 24) [1202. 보석 도둑](https://www.acmicpc.net/problem/1202)
 
 ```python
+# 인터넷 참고
+import sys
+input = sys.stdin.readline
+from heapq import *
 
+N, K = map(int, input().split())
+
+jewel = []
+for _ in range(N):
+    heappush(jewel, list(map(int, input().split())))
+
+bags = sorted(list(int(input()) for _ in range(K)))
+
+tmp = []
+res = 0
+for b in bags:
+    while jewel and b >= jewel[0][0]:
+        heappush(tmp, -heappop(jewel)[1])
+    if tmp:
+        res -= heappop(tmp)
+    elif not jewel:
+        break
+print(res)
 ```
 
 
