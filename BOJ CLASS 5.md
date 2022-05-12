@@ -1098,8 +1098,36 @@ print(res)
 
 ## 25) [1766. 문제집](https://www.acmicpc.net/problem/1766)
 
-```python
+> #17 + heap
 
+```python
+# 인터넷 참고
+
+import sys
+input = sys.stdin.readline
+from heapq import *
+
+N, M = map(int, input().split())
+indegree = [0]*(N+1)
+graph = [[] for _ in range(N+1)]
+
+for _ in range(M):
+    x, y = map(int, input().split())
+    indegree[y] += 1
+    graph[x].append(y)
+
+heap = []
+for i in range(1, N+1):
+    if not indegree[i]:
+        heappush(heap, i)
+
+while heap:
+    x = heappop(heap)
+    print(x, end=' ')
+    for y in graph[x]:
+        indegree[y] -= 1
+        if not indegree[y]:
+            heappush(heap, y)
 ```
 
 
