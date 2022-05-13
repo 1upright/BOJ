@@ -1135,7 +1135,39 @@ while heap:
 ## 26) [2623. 음악프로그램](https://www.acmicpc.net/problem/2623)
 
 ```python
+import sys
+from collections import deque
 
+input = sys.stdin.readline
+N, M = map(int, input().split())
+indegree = [0]*(N+1)
+graph = [[] for _ in range(N+1)]
+
+for _ in range(M):
+    order = list(map(int, input().split()))
+    for i in range(1, order[0]):
+        indegree[order[i+1]] += 1
+        graph[order[i]].append(order[i+1])
+
+q = deque()
+for i in range(1, N+1):
+    if not indegree[i]:
+        q.append(i)
+
+res = []
+while q:
+    x = q.popleft()
+    res.append(x)
+    for y in graph[x]:
+        indegree[y] -= 1
+        if not indegree[y]:
+            q.append(y)
+
+if len(res) == N:
+    for x in res:
+        print(x)
+else:
+    print(0)
 ```
 
 
