@@ -1175,7 +1175,16 @@ else:
 ## 27) [9527. 1의 개수 세기](https://www.acmicpc.net/problem/9527)
 
 ```python
+# 인터넷 참고
+def solve(x):
+    cnt, k = 0, 1
+    while k <= x:
+        k *= 2
+        cnt += (x+1)//k*(k//2) + max(0, (x+1)%k-k//2)
+    return cnt
 
+A, B = map(int, input().split())
+print(solve(B)-solve(A-1))
 ```
 
 
