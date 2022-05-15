@@ -1192,7 +1192,48 @@ print(solve(B)-solve(A-1))
 ## 28) [10775. 공항](https://www.acmicpc.net/problem/10775)
 
 ```python
+# 시간 초과
+import sys
+input = sys.stdin.readline
+G = int(input())
+P = int(input())
+visited = [0]*(G+1)
+cnt = 0
+for _ in range(P):
+    g = int(input())
+    for i in range(g, 0, -1):
+        if not visited[i]:
+            visited[i] = 1
+            cnt += 1
+            break
+    else:
+        print(cnt)
+        exit()
+      
+# 정답
+import sys
+input = sys.stdin.readline
 
+def find(x):
+    if x == rep[x]:
+        return x
+    rep[x] = find(rep[x])
+    return rep[x]
+
+G = int(input())
+P = int(input())
+rep = list(range(G+1))
+cnt = 0
+for _ in range(P):
+    g = int(input())
+    tmp = find(g)
+    if not tmp:
+        print(cnt)
+        exit()
+    rep[tmp] = rep[tmp-1]
+    cnt += 1
+else:
+    print(cnt)
 ```
 
 
