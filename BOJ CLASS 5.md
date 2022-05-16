@@ -1241,7 +1241,31 @@ else:
 ## 29) [12015. 가장 긴 증가하는 부분 수열 2](https://www.acmicpc.net/problem/12015)
 
 ```python
+# 1(dp)처럼 하면 시간 초과
+# 정답 - 인터넷 참고(이분 탐색)
 
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+arr = list(map(int, input().split()))
+res = [0]
+
+for x in arr:
+    if res[-1] < x:
+        res.append(x)
+    else:
+        l = 0
+        r = len(res)
+        while l < r:
+            mid = (l+r)//2
+            if res[mid] < x:
+                l = mid + 1
+            else:
+                r = mid
+        res[r] = x
+
+print(len(res)-1)
 ```
 
 
