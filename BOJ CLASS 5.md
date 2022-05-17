@@ -1273,7 +1273,85 @@ print(len(res)-1)
 ## 30) [12100. 2048 (Easy)](https://www.acmicpc.net/problem/12100)
 
 ```python
+import sys
+input = sys.stdin.readline
+from copy import deepcopy
 
+def move(arr, x):
+    if x == 0: # 상
+        for j in range(N):
+            s = 0
+            for i in range(1, N):
+                if arr[i][j]:
+                    arr[i][j], tmp = 0, arr[i][j]
+                    if arr[s][j] == 0:
+                        arr[s][j] = tmp
+                    elif arr[s][j] == tmp:
+                        arr[s][j] *= 2
+                        s += 1
+                    else:
+                        s += 1
+                        arr[s][j] = tmp
+    elif x == 1: # 하
+        for j in range(N):
+            s = N-1
+            for i in range(N-2, -1, -1):
+                if arr[i][j]:
+                    arr[i][j], tmp = 0, arr[i][j]
+                    if arr[s][j] == 0:
+                        arr[s][j] = tmp
+                    elif arr[s][j] == tmp:
+                        arr[s][j] *= 2
+                        s -= 1
+                    else:
+                        s -= 1
+                        arr[s][j] = tmp
+
+    elif x == 2: # 좌
+        for i in range(N):
+            s = 0
+            for j in range(1, N):
+                if arr[i][j]:
+                    arr[i][j], tmp = 0, arr[i][j]
+                    if arr[i][s] == 0:
+                        arr[i][s] = tmp
+                    elif arr[i][s] == tmp:
+                        arr[i][s] *= 2
+                        s += 1
+                    else:
+                        s += 1
+                        arr[i][s] = tmp
+
+    elif x == 3: # 우
+        for i in range(N):
+            s = N-1
+            for j in range(N-2, -1, -1):
+                if arr[i][j]:
+                    arr[i][j], tmp = 0, arr[i][j]
+                    if arr[i][s] == 0:
+                        arr[i][s] = tmp
+                    elif arr[i][s] == tmp:
+                        arr[i][s] *= 2
+                        s -= 1
+                    else:
+                        s -= 1
+                        arr[i][s] = tmp
+    return arr
+
+def dfs(board, idx):
+    global res
+    if idx == 5:
+        res = max(max(map(max, board)), res)
+        return
+
+    for i in range(4):
+        dfs(move(deepcopy(board), i), idx+1)
+
+N = int(input())
+board = [list(map(int, input().split())) for _ in range(N)]
+res = 0
+dfs(board, 0)
+print(res)
 ```
 
 
