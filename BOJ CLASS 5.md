@@ -1266,6 +1266,24 @@ for x in arr:
         res[r] = x
 
 print(len(res)-1)
+
+# 모듈 사용
+import sys
+from bisect import bisect_left as bs
+
+input = sys.stdin.readline
+
+N = int(input())
+arr = list(map(int, input().split()))
+res = [0]
+
+for x in arr:
+    if res[-1] < x:
+        res.append(x)
+    else:
+        res[bs(res, x)] = x
+
+print(len(res)-1)
 ```
 
 
@@ -1359,7 +1377,36 @@ print(res)
 ## 31) [16724. 피리 부는 사나이](https://www.acmicpc.net/problem/16724)
 
 ```python
+import sys
 
+def dfs(i, j, flag):
+    global res
+    if visited[i][j]:
+        if visited[i][j] == flag:
+            res += 1
+        return
+
+    visited[i][j] = flag
+    if arr[i][j] == 'U':
+        dfs(i-1, j, flag)
+    elif arr[i][j] == 'D':
+        dfs(i+1, j, flag)
+    elif arr[i][j] == 'L':
+        dfs(i, j-1, flag)
+    elif arr[i][j] == 'R':
+        dfs(i, j+1, flag)
+
+input = sys.stdin.readline
+N, M = map(int, input().split())
+arr = [list(input().strip()) for _ in range(N)]
+visited = [[0]*M for _ in range(N)]
+
+flag = res = 0
+for i in range(N):
+    for j in range(M):
+        flag += 1
+        dfs(i, j, flag)
+print(res)
 ```
 
 
@@ -1479,7 +1526,63 @@ print(res)
 ## 46) [14003. 가장 긴 증가하는 부분 수열 5](https://www.acmicpc.net/problem/14003)
 
 ```python
+# 인터넷 참고 1
+import sys
+from bisect import bisect_left as bs
 
+input = sys.stdin.readline
+N = int(input())
+arr = list(map(int, input().split()))
+res = [-1000000001]
+data = [(-1, -1000000001)]
+
+for x in arr:
+    if res[-1] < x:
+        res.append(x)
+        data.append((len(res)-1, x))
+    else:
+        tmp = bs(res, x)
+        res[tmp] = x
+        data.append((tmp, x))
+
+M = len(res)-1
+print(M)
+
+ans = []
+for i in range(N, -1, -1):
+    if data[i][0] == M:
+        ans.append(data[i][1])
+        M -= 1
+print(*reversed(ans))
+
+# 인터넷 참고 2
+import sys
+input = sys.stdin.readline
+from bisect import bisect_left as bs
+
+N = int(input())
+arr = [0]+list(map(int, input().split()))
+dp = [0]*(N+1)
+res = [-1000000001]
+
+for i in range(1, N+1):
+    if arr[i] > res[-1]:
+        res.append(arr[i])
+        dp[i] = len(res)-1
+    else:
+        tmp = bs(res, arr[i])
+        dp[i] = tmp
+        res[tmp] = arr[i]
+
+M = max(dp)
+print(M)
+
+ans = []
+for i in range(N, 0, -1):
+    if dp[i] == M:
+        ans.append(arr[i])
+        M -= 1
+print(*reversed(ans))
 ```
 
 
