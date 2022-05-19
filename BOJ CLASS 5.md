@@ -1414,7 +1414,41 @@ print(res)
 ## 32) [16946. 벽 부수고 이동하기 4](https://www.acmicpc.net/problem/16946)
 
 ```python
+import sys
+input = sys.stdin.readline
+from collections import deque
 
+N, M = map(int, input().split())
+arr = [list(map(int, input().strip())) for _ in range(N)]
+visited = [[0]*M for _ in range(N)]
+for i in range(N):
+    for j in range(M):
+        if not arr[i][j] and not visited[i][j]:
+            visited[i][j] = 1
+            q = deque([(i, j)])
+            cnt = 1
+            tmp = []
+
+            while q:
+                si, sj = q.popleft()
+                for di, dj in [(1, 0), (-1, 0), (0, -1), (0, 1)]:
+                    ni, nj = si+di, sj+dj
+                    if 0<=ni<N and 0<=nj<M and not visited[ni][nj]:
+                        visited[ni][nj] = 1
+                        if arr[ni][nj]:
+                            tmp.append((ni, nj))
+                        else:
+                            q.append((ni, nj))
+                            cnt += 1
+
+            for mi, mj in tmp:
+                visited[mi][mj] = 0
+                arr[mi][mj] += cnt
+
+for i in range(N):
+    for j in range(M):
+        print(arr[i][j]%10, end="")
+    print()
 ```
 
 
