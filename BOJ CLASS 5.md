@@ -1464,7 +1464,29 @@ for i in range(N):
 ## 34) [17387. 선분 교차 2](https://www.acmicpc.net/problem/17387)
 
 ```python
+# 인터넷 참고 - ccw
 
+import sys
+input = sys.stdin.readline
+
+def ccw(p1, q1, p2, q2, p3, q3):
+    tmp = (p2-p1)*(q3-q1)-(p3-p1)*(q2-q1)
+    if tmp > 0:
+        return 1
+    if tmp < 0:
+        return -1
+    return 0
+
+x1, y1, x2, y2 = map(int, input().split())
+x3, y3, x4, y4 = map(int, input().split())
+
+res = 0
+if ccw(x1,y1,x2,y2,x3,y3)*ccw(x1,y1,x2,y2,x4,y4)==0 and ccw(x3,y3,x4,y4,x1,y1)*ccw(x3,y3,x4,y4,x2,y2)==0:
+    if min(x1,x2)<=max(x3,x4) and max(x1,x2)>=min(x3,x4) and min(y1,y2)<=max(y3,y4) and min(y3,y4)<=max(y1,y2):
+        res = 1
+elif ccw(x1,y1,x2,y2,x3,y3)*ccw(x1,y1,x2,y2,x4,y4)<=0 and ccw(x3,y3,x4,y4,x1,y1)*ccw(x3,y3,x4,y4,x2,y2)<=0:
+    res = 1
+print(res)
 ```
 
 
