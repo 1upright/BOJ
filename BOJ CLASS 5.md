@@ -1456,7 +1456,100 @@ for i in range(N):
 ## 33) [17143. 낚시왕](https://www.acmicpc.net/problem/17143)
 
 ```python
+# 시간 초과
+import sys
 
+input = sys.stdin.readline
+R, C, M = map(int, input().split())
+arr = [[[] for _ in range(C)] for _ in range(R)]
+
+for _ in range(M):
+    r, c, s, d, z = map(int, input().split())
+    arr[r-1][c-1] = [z, s, d-1]
+
+res = 0
+for sj in range(C):
+    for si in range(R):
+        if arr[si][sj]:
+            res += arr[si][sj][0]
+            arr[si][sj] = []
+            break
+
+    tmp = [[[] for _ in range(C)] for _ in range(R)]
+    for i in range(R):
+        for j in range(C):
+            if arr[i][j]:
+                z, s, d = arr[i][j]
+                p, q, s_cnt = i, j, s
+                while s_cnt > 0:
+                    np, nq = p + [-1, 1, 0, 0][d], q + [0, 0, 1, -1][d]
+                    if 0<=np<R and 0<=nq<C:
+                        s_cnt -= 1
+                        p, q = np, nq
+                    else:
+                        d = d//2*2+(d%2-1)*(-1)
+                tmp[p][q] = max(tmp[p][q], [z, s, d])
+    arr = tmp
+
+print(res)
+
+# 인터넷 참고
+import sys; input = sys.stdin.readline
+
+def move(r, c, s, d):
+    nr, nc = r+[-1, 1, 0, 0][d]*s, c+[0, 0, 1, -1][d]*s
+    if 0<nr<=R and 0<nc<=C:
+        return (nr, nc, d)
+
+    if d == 0: s += R-r
+    elif d == 1: s += r-1
+    elif d == 2: s += c-1
+    elif d == 3: s += C-c
+
+    if d == 2 or d == 3:
+        k = (s-1)//(C-1)
+        go = (s-k*(C-1))%C
+    else:
+        k = (s-1)//(R-1)
+        go = (s-k*(R-1))%R
+
+    if k%2:
+        d = d//2*2+(d%2-1)*(-1)
+
+    if d == 0: r = R
+    elif d == 1: r = 1
+    elif d == 2: c = 1
+    elif d == 3: c = C
+
+    r += [-1, 1, 0, 0][d]*go
+    c += [0, 0, 1, -1][d]*go
+
+    return (r, c, d)
+
+
+R, C, M = map(int, input().split())
+arr = [[[] for _ in range(C+1)] for _ in range(R+1)]
+for _ in range(M):
+    r, c, s, d, z = map(int, input().split())
+    arr[r][c] = [z, s, d-1]
+
+res = 0
+for sj in range(1, C+1):
+    for si in range(1, R+1):
+        if arr[si][sj]:
+            res += arr[si][sj][0]
+            arr[si][sj] = []
+            break
+
+    tmp = [[[] for _ in range(C+1)] for _ in range(R+1)]
+    for i in range(1, R+1):
+        for j in range(1, C+1):
+            if arr[i][j]:
+                z, s, d = arr[i][j]
+                p, q, d = move(i, j, s, d)
+                tmp[p][q] = max(tmp[p][q], [z, s, d])
+    arr = tmp
+print(res)
 ```
 
 
