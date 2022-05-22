@@ -1493,7 +1493,46 @@ for sj in range(C):
 
 print(res)
 
-# 인터넷 참고
+# 정답
+import sys; input = sys.stdin.readline
+
+R, C, M = map(int, input().split())
+arr = [[[] for _ in range(C)] for _ in range(R)]
+for _ in range(M):
+    r, c, s, d, z = map(int, input().split())
+    arr[r-1][c-1] = [z, s, d-1]
+
+res = 0
+for sj in range(C):
+    for si in range(R):
+        if arr[si][sj]:
+            res += arr[si][sj][0]
+            arr[si][sj] = []
+            break
+
+    tmp = [[[] for _ in range(C)] for _ in range(R)]
+    for i in range(R):
+        for j in range(C):
+            if arr[i][j]:
+                z, s, d = arr[i][j]
+                p, q = i+[-1, 1, 0, 0][d]*s, j+[0, 0, 1, -1][d]*s
+                while not 0<=p<R:
+                    if p < 0:
+                        p = -p
+                    elif p >= R:
+                        p = 2*(R-1)-p
+                    d = d//2*2+(d%2-1)*(-1)
+                while not 0<=q<C:
+                    if q < 0:
+                        q = -q
+                    elif q >= C:
+                        q = 2*(C-1)-q
+                    d = d//2*2+(d%2-1)*(-1)
+                tmp[p][q] = max(tmp[p][q], [z, s, d])
+    arr = tmp
+print(res)
+
+# 다른 방법(인터넷 참고)
 import sys; input = sys.stdin.readline
 
 def move(r, c, s, d):
@@ -1587,7 +1626,35 @@ print(res)
 ## 35) [1208. 부분수열의 합 2](https://www.acmicpc.net/problem/1208)
 
 ```python
+# 인터넷 참고
 
+import sys; input = sys.stdin.readline
+from bisect import bisect_left, bisect_right
+from itertools import combinations
+
+def get_num(arr, x):
+    return bisect_right(arr, x) - bisect_left(arr, x)
+
+def get_sum(arr, arr2):
+    for i in range(1, len(arr)+1):
+        for com in combinations(arr, i):
+            arr2.append(sum(com))
+    arr2.sort()
+
+N, S = map(int, input().split())
+arr = list(map(int, input().split()))
+
+l, r = arr[:N//2], arr[N//2:]
+l_sum, r_sum = [], []
+get_sum(l, l_sum)
+get_sum(r, r_sum)
+
+res = 0
+res += get_num(l_sum, S)
+res += get_num(r_sum, S)
+for x in l_sum:
+    res += get_num(r_sum, S-x)
+print(res)
 ```
 
 
