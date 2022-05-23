@@ -1661,8 +1661,36 @@ print(res)
 
 ## 36) [1509. 팰린드롬 분할](https://www.acmicpc.net/problem/1509)
 
-```python
+> [10942](https://github.com/1upright/BOJ/blob/master/BOJ%20CLASS%205.md#21-10942-%ED%8C%B0%EB%A6%B0%EB%93%9C%EB%A1%AC) + 인터넷 참고
 
+```python
+import sys; input = sys.stdin.readline
+
+s = input().strip()
+N = len(s)
+res = [2500]*(N+1)
+res[0] = 0
+dp = [[0]*(N+1) for _ in range(N+1)]
+
+for i in range(1, N+1):
+    dp[i][i] = 1
+
+for i in range(1, N):
+    if s[i-1] == s[i]:
+        dp[i][i+1] = 1
+
+for k in range(2, N):
+    for i in range(1, N+1-k):
+        if s[i-1] == s[i+k-1] and dp[i+1][i+k-1] == 1:
+            dp[i][i+k] = 1
+
+for i in range(1, N+1):
+    res[i] = min(res[i], res[i-1]+1)
+    for j in range(i+1, N+1):
+        if dp[i][j] != 0:
+            res[j] = min(res[j], res[i-1]+1)
+
+print(res[N])
 ```
 
 
