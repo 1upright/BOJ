@@ -1714,7 +1714,30 @@ print(res[N])
 ## 39) [2098. 외판원 순회](https://www.acmicpc.net/problem/2098) 
 
 ```python
+# 인터넷 참고
+import sys; input = sys.stdin.readline
 
+def dfs(x, visited):
+    if visited == (1<<N)-1:
+        if arr[x][0]:
+            return arr[x][0]
+        else:
+            return INF
+
+    if dp[x][visited] != INF:
+        return dp[x][visited]
+
+    for i in range(1, N):
+        if arr[x][i] and not visited&(1<<i):
+            dp[x][visited] = min(dp[x][visited], dfs(i, visited|(1<<i))+arr[x][i])
+
+    return dp[x][visited]
+
+N = int(input())
+arr = [list(map(int, input().split())) for _ in range(N)]
+INF = 16000001
+dp = [[INF]*(1<<N) for _ in range(N)]
+print(dfs(0, 1))
 ```
 
 
