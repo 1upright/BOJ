@@ -1698,7 +1698,26 @@ print(res[N])
 ## 37) [1562. 계단 수](https://www.acmicpc.net/problem/1562) 
 
 ```python
+# 인터넷 참고
+N = int(input())
 
+dp = [[0]*(1<<10) for _ in range(10)]
+KEY = 1000000000
+
+for i in range(1, 10):
+    dp[i][1<<i] = 1
+
+for _ in range(1, N):
+    next = [[0]*(1<<10) for _ in range(10)]
+    for i in range(10):
+        for j in range(1<<10):
+            if i < 9:
+                next[i][j|(1<<i)] = (next[i][j|(1<<i)] + dp[i+1][j])%KEY
+            if i > 0:
+                next[i][j|(1<<i)] = (next[i][j|(1<<i)] + dp[i-1][j])%KEY
+    dp = next
+
+print(sum([dp[i][(1<<10)-1] for i in range(10)])%KEY)
 ```
 
 
