@@ -1780,7 +1780,42 @@ print(dfs(0, 1))
 ## 42) [12850. 본대 산책2](https://www.acmicpc.net/problem/12850)
 
 ```python
+MOD = 1000000007
+arr = [
+        [0, 1, 1, 0, 0, 0, 0, 0],
+        [1, 0, 1, 1, 0, 0, 0, 0],
+        [1, 1, 0, 1, 1, 0, 0, 0],
+        [0, 1, 1, 0, 1, 1, 0, 0],
+        [0, 0, 1, 1, 0, 1, 0, 1],
+        [0, 0, 0, 1, 1, 0, 1, 0],
+        [0, 0, 0, 0, 0, 1, 0, 1],
+        [0, 0, 0, 0, 1, 0, 1, 0]
+    ]
 
+def mul(X, Y):
+    Z = [[0]*8 for _ in range(8)]
+    for i in range(8):
+        for j in range(8):
+            for k in range(8):
+                Z[i][j] += X[i][k]*Y[k][j]
+            Z[i][j] %= MOD
+    return Z
+
+def dnc(arr, D):
+    if D == 1:
+        return arr
+    tmp = dnc(arr, D//2)
+    if D%2:
+        return mul(mul(tmp, tmp), arr)
+    else:
+        return mul(tmp, tmp)
+
+D = int(input())
+res = dnc(arr, D)
+for i in range(8):
+    for j in range(8):
+        res[i][j] %= MOD
+print(res[0][0])
 ```
 
 
