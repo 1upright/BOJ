@@ -1772,7 +1772,50 @@ print(dfs(0, 1))
 ## 41) [9328. 열쇠](https://www.acmicpc.net/problem/9328)
 
 ```python
+import sys; input = sys.stdin.readline
+from collections import deque
 
+for t in range(int(input())):
+    H, W = map(int, input().split())
+    arr = [['.']*(W+2)]+[list('.'+input().strip()+'.') for _ in range(H)]+[['.']*(W+2)]
+    key = input().strip()
+
+    check = [0]*26
+    if key != '0':
+        for i in key:
+            check[ord(i)-97] = 1
+
+    visited = [[0]*(W+2) for _ in range(H+2)]
+    visited[0][0] = 1
+    q = deque([(0, 0)])
+    deqs = [deque() for _ in range(26)] # [deque()]*26 과의 차이점이 뭘까?
+    res = 0
+    while q:
+        i, j = q.popleft()
+        for d in range(4):
+            ni, nj = i+[-1, 0, 1, 0][d], j+[0, 1, 0, -1][d]
+            if 0<=ni<H+2 and 0<=nj<W+2:
+                if arr[ni][nj] == '*':
+                    continue
+
+                if not visited[ni][nj]:
+                    visited[ni][nj] = 1
+
+                    x = arr[ni][nj]
+                    if x == '$':
+                        res += 1
+                    elif 'A'<=x<='Z':
+                        n = ord(x)-65
+                        if not check[n]:
+                            deqs[n].append((ni, nj))
+                            continue
+                    elif 'a'<=x<='z':
+                        m = ord(x)-97
+                        check[m] = 1
+                        while deqs[m]:
+                            q.append(deqs[m].popleft())
+                    q.append((ni, nj))
+    print(res)
 ```
 
 
