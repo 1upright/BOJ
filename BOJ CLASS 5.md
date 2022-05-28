@@ -1866,7 +1866,56 @@ print(res[0][0])
 ## 43) [13460. 구슬 탈출 2](https://www.acmicpc.net/problem/13460)
 
 ```python
+import sys; input = sys.stdin.readline
+from collections import deque
 
+di, dj = [0, 0, -1, 1], [-1, 1, 0, 0]
+
+def move(i, j, d):
+    dh, dw, c = di[d], dj[d], 0
+    while arr[i+dh][j+dw] != '#' and arr[i][j] != 'O':
+        i += dh
+        j += dw
+        c += 1
+    return i, j, c
+
+N, M = map(int, input().split())
+arr= [list(input().strip()) for _ in range(N)]
+for i in range(N):
+    for j in range(M):
+        if arr[i][j] == 'R':
+            ri, rj = i, j
+        elif arr[i][j] == 'B':
+            bi, bj = i, j
+
+visited = [[[[0]*M for _ in range(N)] for __ in range(M)] for ___ in range(N)]
+visited[ri][rj][bi][bj] = 1
+q = deque([(ri, rj, bi, bj, 1)])
+while q:
+    ri, rj, bi, bj, cnt = q.popleft()
+    if cnt > 10:
+        print(-1);exit()
+
+    for d in range(4):
+        nri, nrj, rc = move(ri, rj, d)
+        nbi, nbj, bc = move(bi, bj, d)
+
+        if arr[nbi][nbj] != 'O':
+            if arr[nri][nrj] == 'O':
+                print(cnt);exit()
+
+            if nri == nbi and nrj == nbj:
+                if rc > bc:
+                    nri -= di[d]
+                    nrj -= dj[d]
+                else:
+                    nbi -= di[d]
+                    nbj -= dj[d]
+
+            if not visited[nri][nrj][nbi][nbj]:
+                visited[nri][nrj][nbi][nbj] = 1
+                q.append((nri, nrj, nbi, nbj, cnt+1))
+print(-1)
 ```
 
 
