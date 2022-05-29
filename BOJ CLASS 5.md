@@ -1764,7 +1764,72 @@ print(dfs(0, 1))
 ## 40) [2887. 행성 터널](https://www.acmicpc.net/problem/2887)
 
 ```python
+# 메모리 초과
+import sys; input = sys.stdin.readline
 
+def find(x):
+    if x == rep[x]:
+        return x
+    rep[x] = find(rep[x])
+    return rep[x]
+
+def union(x, y):
+    x, y = find(x), find(y)
+    if x > y:
+        rep[x] = y
+    else:
+        rep[y] = x
+
+N = int(input())
+p = [list(map(int, input().split())) for _ in range(N)]
+
+edge = []
+for i in range(N-1):
+    for j in range(i, N):
+        edge.append((min(abs(p[i][0]-p[j][0]), abs(p[i][1]-p[j][1]), abs(p[i][2]-p[j][2])), j, i))
+edge.sort()
+rep = list(range(N))
+
+res = 0
+for w, v, u in edge:
+    if find(u) != find(v):
+        union(u, v)
+        res += w
+print(res)
+
+# 정답 - 인터넷 참고
+import sys; input = sys.stdin.readline
+
+def find(x):
+    if x == rep[x]:
+        return x
+    rep[x] = find(rep[x])
+    return rep[x]
+
+def union(x, y):
+    x, y = find(x), find(y)
+    if x > y:
+        rep[x] = y
+    else:
+        rep[y] = x
+
+N = int(input())
+p = [list(map(int, input().split()))+[i] for i in range(N)]
+
+edge = []
+for i in range(3):
+    p.sort(key=lambda x:x[i])
+    for j in range(1, N):
+        edge.append((abs(p[j][i]-p[j-1][i]), p[j][3], p[j-1][3]))
+edge.sort()
+
+rep = list(range(N))
+res = 0
+for w, v, u in edge:
+    if find(u) != find(v):
+        union(u, v)
+        res += w
+print(res)
 ```
 
 
