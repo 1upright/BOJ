@@ -1725,7 +1725,72 @@ print(sum([dp[i][(1<<10)-1] for i in range(10)])%KEY)
 ## 38) [1799. 비숍](https://www.acmicpc.net/problem/1799)
 
 ```python
+# 시간 초과
+N = int(input())
+arr = [list(map(int, input().split())) for _ in range(N)]
 
+def dfs(idx):
+    global res
+
+    if idx == N*2-1:
+        res = max(res, visited.count(1))
+        return
+
+    dfs(idx+1)
+    for i, j in ld[idx]:
+        if not visited[i-j+N-1]:
+            visited[i-j+N-1] = 1
+            dfs(idx+1)
+            visited[i-j+N-1] = 0
+
+ld = [[] for _ in range(N*2-1)]
+visited = [0]*(N*2-1)
+for i in range(N):
+    for j in range(N):
+        if arr[i][j]:
+            rd[i+j].append((i, j))
+
+res = 0
+dfs(0)
+print(res)
+
+# 정답
+import sys; input = sys.stdin.readline
+
+def dfs(idx, cnt):
+    global res
+    if idx == N*2:
+        res = max(res, cnt)
+        return
+
+    able = 0
+    for d in range(idx, N*2-1):
+        for i in range(d+1):
+            j = d-i
+            if 0<=i<N and 0<=j<N and arr[i][j] and not rd[i-j+N-1]:
+                able += 1
+                break
+
+    if able + cnt <= res:
+        return
+
+    for i in range(idx+1):
+        j = idx-i
+        if 0<=i<N and 0<=j<N and arr[i][j] and not rd[i-j+N-1]:
+            rd[i-j+N-1] = 1
+            dfs(idx+1, cnt+1)
+            rd[i-j+N-1] = 0
+
+    dfs(idx+1, cnt)
+
+
+N = int(input())
+arr = [list(map(int, input().split())) for _ in range(N)]
+rd = [0]*(N*2-1)
+
+res = 0
+dfs(0, 0)
+print(res)
 ```
 
 
