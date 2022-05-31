@@ -2053,7 +2053,57 @@ print(-1)
 ## 44) [2162. 선분 그룹](https://www.acmicpc.net/problem/2162)
 
 ```python
+import sys; input = sys.stdin.readline
 
+def ccw(p1, q1, p2, q2, p3, q3):
+    tmp = (p2-p1)*(q3-q1)-(p3-p1)*(q2-q1)
+    if tmp > 0:
+        return 1
+    if tmp < 0:
+        return -1
+    return 0
+
+def isgroup(a, b):
+    x1, y1, x2, y2 = a
+    x3, y3, x4, y4 = b
+    if ccw(x1,y1,x2,y2,x3,y3)*ccw(x1,y1,x2,y2,x4,y4)==0 and ccw(x3,y3,x4,y4,x1,y1)*ccw(x3,y3,x4,y4,x2,y2)==0:
+        if min(x1,x2)<=max(x3,x4) and max(x1,x2)>=min(x3,x4) and min(y1,y2)<=max(y3,y4) and min(y3,y4)<=max(y1,y2):
+            return 1
+    elif ccw(x1,y1,x2,y2,x3,y3)*ccw(x1,y1,x2,y2,x4,y4)<=0 and ccw(x3,y3,x4,y4,x1,y1)*ccw(x3,y3,x4,y4,x2,y2)<=0:
+        return 1
+    return 0
+
+def find(x):
+    if x == rep[x]:
+        return x
+    rep[x] = find(rep[x])
+    return rep[x]
+
+def union(x, y):
+    x, y = find(x), find(y)
+    if x > y:
+        rep[x] = y
+    else:
+        rep[y] = x
+
+N = int(input())
+lines = [list(map(int, input().split())) for _ in range(N)]
+rep = list(range(N))
+
+for i in range(N-1):
+    for j in range(i+1, N):
+        if isgroup(lines[i], lines[j]):
+            union(i, j)
+
+cnt = 0
+cnts = [0]*N
+for i in range(N):
+    if i == rep[i]:
+        cnt += 1
+    cnts[find(i)] += 1
+
+print(cnt)
+print(max(cnts))
 ```
 
 
@@ -2140,6 +2190,6 @@ print(*reversed(ans))
 
 ## 48) [16566. 카드 게임](https://www.acmicpc.net/problem/16566)
 
-```python
+``` #python
 
 ```
