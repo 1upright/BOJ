@@ -2190,6 +2190,30 @@ print(*reversed(ans))
 
 ## 48) [16566. 카드 게임](https://www.acmicpc.net/problem/16566)
 
-``` #python
+``` python
+import sys; input = sys.stdin.readline
+from bisect import bisect_right as bs
 
+def find(x):
+    if x == rep[x]:
+        return x
+    rep[x] = find(rep[x])
+    return rep[x]
+
+def union(x, y):
+    x = find(x)
+    y = find(y)
+    rep[x] = y
+
+N, M, K = map(int, input().split())
+cards = list(map(int, input().split()))
+cards.sort()
+targets = list(map(int, input().split()))
+rep = list(range(M+1))
+
+for num in targets:
+    idx = bs(cards, num)
+    tmp = find(idx)
+    print(cards[tmp])
+    union(tmp, tmp+1)
 ```
