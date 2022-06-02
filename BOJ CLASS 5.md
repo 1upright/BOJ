@@ -2183,7 +2183,49 @@ print(*reversed(ans))
 ## 47) [14939. 불 끄기](https://www.acmicpc.net/problem/14939)
 
 ```python
+# 인터넷 참고
 
+import sys; input = sys.stdin.readline
+from copy import deepcopy
+
+tmp = [list(input().strip()) for _ in range(10)]
+switch = [[0]*10 for _ in range(10)]
+res = 101
+
+for i in range(10):
+    for j in range(10):
+        if tmp[i][j] == 'O':
+            switch[i][j] = 1
+
+for n in range(1<<10):
+    arr = deepcopy(switch)
+    cnt = 0
+    for i in range(10):
+        if n & (1<<i):
+            cnt += 1
+            for k in range(5):
+                ni, nj = [-1, 1, 0, 0, 0][k], i+[0, 0, -1, 1, 0][k]
+                if 0<=ni<10 and 0<=nj<10:
+                    arr[ni][nj] = (arr[ni][nj]-1)*(-1)
+
+    for i in range(1, 10):
+        for j in range(10):
+            if arr[i-1][j]:
+                for k in range(5):
+                    ni, nj = i+[-1, 1, 0, 0, 0][k], j+[0, 0, -1, 1, 0][k]
+                    if 0<=ni<10 and 0<=nj<10:
+                        arr[ni][nj] = (arr[ni][nj]-1)*(-1)
+                cnt += 1
+
+    check = 1
+    for i in range(10):
+        if arr[9][i]:
+            check = 0
+            break
+
+    if check: res = min(res, cnt)
+
+print(-1 if res == 101 else res)
 ```
 
 
