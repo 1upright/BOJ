@@ -2111,7 +2111,36 @@ print(max(cnts))
 ## 45) [2568. 전깃줄 - 2](https://www.acmicpc.net/problem/2568)
 
 ```python
+import sys; input = sys.stdin.readline
+from bisect import bisect_left as bs
 
+N = int(input())
+lines = [list(map(int, input().split())) for _ in range(N)]
+lines.sort()
+res = [-1]
+data = [(-1, -1)]
+
+for a, b in lines:
+    if res[-1] < b:
+        res.append(b)
+        data.append((len(res)-1, a, b))
+    else:
+        tmp = bs(res, b)
+        res[tmp] = b
+        data.append((tmp, a, b))
+
+M = len(res)-1
+print(N-M)
+
+ans = []
+for i in range(N, 0, -1):
+    if data[i][0] == M:
+        M -= 1
+    else:
+        ans.append((data[i][1]))
+
+for x in reversed(ans):
+    print(x)
 ```
 
 
