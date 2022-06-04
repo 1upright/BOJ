@@ -3,6 +3,29 @@
 ## 1) [2533. 사회망 서비스(SNS)](https://www.acmicpc.net/problem/2533)
 
 ```python
+import sys; input = sys.stdin.readline; sys.setrecursionlimit(10**9)
+
+def dfs(x):
+    visited[x] = 1
+    dp[x][0] = 1
+    for y in graph[x]:
+        if not visited[y]:
+            dfs(y)
+            dp[x][0] += min(dp[y])
+            dp[x][1] += dp[y][0]
+
+N = int(input())
+graph = [[] for _ in range(N+1)]
+for _ in range(N-1):
+    u, v = map(int, input().split())
+    graph[u].append(v)
+    graph[v].append(u)
+
+dp = [[0, 0] for _ in range(N+1)]
+visited = [0]*(N+1)
+
+dfs(1)
+print(min(dp[1]))
 ```
 
 
