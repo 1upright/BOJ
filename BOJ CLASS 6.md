@@ -33,7 +33,26 @@ print(min(dp[1]))
 ## 2) [13334. 철로](https://www.acmicpc.net/problem/13334)
 
 ```python
+import sys; input = sys.stdin.readline
 
+N = int(input())
+data = [list(input().strip().split())[1:] for _ in range(N)]
+data.sort()
+
+floor = '--'
+for i in range(len(data[0])):
+    print(floor*i+data[0][i])
+
+for i in range(1, N):
+    k = 0
+    for j in range(len(data[i])):
+        if len(data[i-1]) <= j or data[i-1][j] != data[i][j]:
+            break
+        else:
+            k += 1
+
+    for j in range(k, len(data[i])):
+        print(floor*j+data[i][j])
 ```
 
 
