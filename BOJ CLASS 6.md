@@ -30,7 +30,7 @@ print(min(dp[1]))
 
 
 
-## 2) [13334. 철로](https://www.acmicpc.net/problem/13334)
+## 2) [14725. 개미굴](https://www.acmicpc.net/problem/14725)
 
 ```python
 import sys; input = sys.stdin.readline
@@ -57,10 +57,28 @@ for i in range(1, N):
 
 
 
-## 3) [14725. 개미굴](https://www.acmicpc.net/problem/14725)
+## 3) [13334. 철로](https://www.acmicpc.net/problem/13334)
 
 ```python
+import sys; input = sys.stdin.readline
+import heapq
 
+N = int(input())
+homes = [sorted(list(map(int, input().split()))) for _ in range(N)]
+homes.sort(key=lambda x: x[1])
+d = int(input())
+res = 0
+heap = []
+
+for s, e in homes:
+    tmp = e-d
+    if tmp <= s:
+        heapq.heappush(heap, s)
+    while heap and heap[0] < tmp:
+        heapq.heappop(heap)
+    res = max(res, len(heap))
+
+print(res)
 ```
 
 
