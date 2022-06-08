@@ -158,7 +158,24 @@ print(res)
 ## 13) [15824. 너 봄에는 캡사이신이 맛있단다](https://www.acmicpc.net/problem/15824)
 
 ```python
+import sys; input = sys.stdin.readline
 
+def dnc(x):
+    if x == 0: return 1
+    if x == 1: return 2
+    tmp = dnc(x//2)
+    if x % 2: return 2*tmp*tmp%MOD
+    else: return tmp*tmp%MOD
+
+N = int(input())
+vals = sorted(list(map(int, input().split())))
+MOD = 1000000007
+res = 0
+
+for i in range(N):
+    res += vals[i]*(dnc(i)-dnc(N-i-1))
+
+print(res%MOD)
 ```
 
 
