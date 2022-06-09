@@ -100,6 +100,22 @@ for i in range(4, N+1, 4):
     res %= 10007
 
 print(res)
+
+# 더 깔끔하게
+from math import comb
+
+N = int(input())
+res = 0
+for i in range(4, N+1, 4):
+    res += comb(13, i//4) * comb(52-i, N-i) * (i//4%2*2-1)
+    res %= 10007
+
+print(res)
+
+# 숏코딩
+from math import comb as c;N,r=int(input()),0
+for i in range(4,N+1,4):r+=c(13,i//4)*c(52-i,N-i)*(i//4%2*2-1)
+print(r%10007)
 ```
 
 
