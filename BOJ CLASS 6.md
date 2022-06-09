@@ -86,7 +86,20 @@ print(res)
 ## 4) [16565. N포커](https://www.acmicpc.net/problem/16565)
 
 ```python
+from math import factorial
 
+def ncr(n, r):
+    return factorial(n) // factorial(r) // factorial(n-r)
+
+N = int(input())
+
+res = 0
+for i in range(4, N+1, 4):
+    tmp = ncr(13, i//4) * ncr(52-i, N-i)
+    res += tmp if i//4%2 else -tmp
+    res %= 10007
+
+print(res)
 ```
 
 
