@@ -123,7 +123,24 @@ print(r%10007)
 ## 5) [1019. 책 페이지](https://www.acmicpc.net/problem/1019)
 
 ```python
+N = int(input())
+cnt = [0]*10
+val = 1
 
+while N > 0:
+    while N % 10 != 9:
+        for x in str(N):
+            cnt[int(x)] += val
+        N -= 1
+
+    tmp = (N+1)//10*val
+    for i in range(10):
+        cnt[i] += tmp
+    cnt[0] -= val
+    val *= 10
+    N //= 10
+
+print(*cnt)
 ```
 
 
