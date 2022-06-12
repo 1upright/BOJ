@@ -215,7 +215,72 @@ for _ in range(M+K):
 ## 7) [2357. 최솟값과 최댓값](https://www.acmicpc.net/problem/2357)
 
 ```python
+# 당연히 시간초과
+import sys; input = sys.stdin.readline
 
+N, M = map(int, input().split())
+nums = [int(input()) for _ in range(N)]
+
+for _ in range(M):
+    a, b = map(int, input().split())
+    check = nums[a-1:b]
+    print(min(check), max(check))
+    
+# 정답
+import sys; input = sys.stdin.readline
+from math import ceil, log2
+
+def init_min(start, end, node):
+    if start == end:
+        tree_min[node] = l[start-1]
+        return tree_min[node]
+
+    mid = (start+end)//2
+    tree_min[node] = min(init_min(start, mid, node*2), init_min(mid+1, end, node*2+1))
+    return tree_min[node]
+
+def init_max(start, end, node):
+    if start == end:
+        tree_max[node] = l[start-1]
+        return tree_max[node]
+
+    mid = (start+end)//2
+    tree_max[node] = max(init_max(start, mid, node*2), init_max(mid+1, end, node*2+1))
+    return tree_max[node]
+
+def find_min(start, end, node, left, right):
+    if left > end or right < start:
+        return 1000000001
+
+    if left <= start and end <= right:
+        return tree_min[node]
+
+    mid = (start+end)//2
+    return min(find_min(start, mid, node*2, left, right), find_min(mid+1, end, node*2+1, left, right))
+
+
+def find_max(start, end, node, left, right):
+    if left > end or right < start:
+        return 0
+
+    if left <= start and end <= right:
+        return tree_max[node]
+
+    mid = (start+end)//2
+    return max(find_max(start, mid, node*2, left, right), find_max(mid+1, end, node*2+1, left, right))
+
+N, M = map(int, input().split())
+size = 1<<int(ceil(log2(N)))+1
+l = [int(input()) for _ in range(N)]
+tree_min = [0]*size
+tree_max = [0]*size
+
+init_min(1, N, 1)
+init_max(1, N, 1)
+
+for _ in range(M):
+    a, b = map(int, input().split())
+    print(find_min(1, N, 1, a, b), find_max(1, N, 1, a, b))
 ```
 
 
