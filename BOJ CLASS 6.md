@@ -296,7 +296,50 @@ for _ in range(M):
 ## 9) [11505. 구간 곱 구하기](https://www.acmicpc.net/problem/11505)
 
 ```python
+import sys;input = sys.stdin.readline
 
+def init(start, end, node):
+    if start == end:
+        tree[node] = l[start-1]
+        return tree[node]
+
+    mid = (start+end)//2
+    tree[node] = init(start, mid, node*2)*init(mid+1, end, node*2+1)%MOD
+    return tree[node]
+
+def find(start, end, node, left, right):
+    if left > end or right < start:
+        return 1
+    if left <= start and end <= right:
+        return tree[node]
+
+    mid = (start+end)//2
+    return find(start, mid, node*2, left, right)*find(mid+1, end, node*2+1, left, right)%MOD
+
+def update(start, end, node, idx, diff):
+    if start <= idx <= end:
+        if start == end:
+            tree[node] = diff
+            return
+
+        mid = (start+end)//2
+        update(start, mid, node*2, idx, diff)
+        update(mid+1, end, node*2+1, idx, diff)
+        tree[node] = tree[node*2]*tree[node*2+1]%MOD
+
+MOD = 1000000007
+N, M, K = map(int, input().split())
+l = list(int(input()) for _ in range(N))
+tree = [0]*(N*4)
+init(1, N, 1)
+
+for _ in range(M + K):
+    a, b, c = map(int, input().split())
+    if a == 1:
+        l[b-1] = c
+        update(1, N, 1, b, c)
+    elif a == 2:
+        print(find(1, N, 1, b, c))
 ```
 
 
