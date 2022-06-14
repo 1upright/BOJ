@@ -288,7 +288,31 @@ for _ in range(M):
 ## 8) [3015. 오아시스 재결합](https://www.acmicpc.net/problem/3015)
 
 ```python
+import sys; input = sys.stdin.readline
 
+N = int(input())
+res = 0
+stack = []
+
+for _ in range(N):
+    h = int(input())
+
+    while stack and stack[-1][0] < h:
+        res += stack.pop()[1]
+
+    if stack and stack[-1][0] == h:
+        tmp = stack.pop()[1]
+        res += tmp
+
+        if stack:
+            res += 1
+        stack.append((h, tmp+1))
+
+    else:
+        if stack:
+            res += 1
+        stack.append((h, 1))
+print(res)
 ```
 
 
