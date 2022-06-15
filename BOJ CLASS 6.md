@@ -371,7 +371,20 @@ for _ in range(M + K):
 ## 10) [11689. GCD(n, k) = 1](https://www.acmicpc.net/problem/11689)
 
 ```python
+# 인터넷 참고 - 오일러 피 함수
+N = int(input())
+res = N
 
+for i in range(2, int(N**0.5)+1):
+    if not N%i:
+        while not N%i:
+            N //= i
+        res *= 1-1/i
+
+if N > 1:
+    res *= 1-1/N
+
+print(int(res))
 ```
 
 
