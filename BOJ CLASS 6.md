@@ -392,7 +392,26 @@ print(int(res))
 ## 11) [13977. 이항 계수와 쿼리](https://www.acmicpc.net/problem/13977)
 
 ```python
+# 인터넷 참고 - 이항 계수
+import sys; input = sys.stdin.readline
 
+MOD = 1000000007
+l = 4000001
+factorial = [1]*l
+
+for i in range(1, l):
+    factorial[i] = factorial[i-1]*i%MOD
+
+for _ in range(int(input())):
+    N, K = map(int, input().split())
+    x, y, z, exp = factorial[N], factorial[K]*factorial[N-K]%MOD, 1, MOD-2
+    while exp:
+        if exp%2:
+            z = y*z%MOD
+        y = y*y%MOD
+        exp //= 2
+
+    print(x*z%MOD)
 ```
 
 
