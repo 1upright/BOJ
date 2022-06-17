@@ -419,7 +419,55 @@ for _ in range(int(input())):
 ## 12) [14428. 수열과 쿼리 16](https://www.acmicpc.net/problem/14428)
 
 ```python
+import sys; input = sys.stdin.readline
+from math import ceil, log2
 
+def init(start, end, node):
+    if start == end:
+        tree[node] = l[start-1]
+        return tree[node]
+
+    mid = (start+end)//2
+    tree[node] = min(init(start, mid, node*2), init(mid+1, end, node*2+1))
+    return tree[node]
+
+def find(start, end, node, left, right):
+    if left > end or right < start:
+        return [1000000001, 1000000001]
+
+    if left <= start and end <= right:
+        return tree[node]
+
+    mid = (start+end)//2
+    return min(find(start, mid, node*2, left, right), find(mid+1, end, node*2+1, left, right))
+
+def update(start, end, node, idx, diff):
+    if start <= idx <= end:
+        if start == end:
+            tree[node] = diff
+            return
+        mid = (start+end)//2
+        update(start, mid, node*2, idx, diff)
+        update(mid+1, end, node*2+1, idx, diff)
+
+        tree[node] = min(tree[node*2], tree[node*2+1])
+
+N = int(input())
+size = 1<<int(ceil(log2(N)))+1
+tree = [0]*size
+
+tmp = list(map(int, input().split()))
+l = [[tmp[i], i+1] for i in range(N)]
+init(1, N, 1)
+
+M = int(input())
+for _ in range(M):
+    a, b, c = map(int, input().split())
+    if a == 1:
+        l[b-1][0] = c
+        update(1, N, 1, b, l[b-1])
+    elif a == 2:
+        print(find(1, N, 1, b, c)[1])
 ```
 
 
