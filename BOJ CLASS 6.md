@@ -500,7 +500,23 @@ print(res%MOD)
 ## 14) [17371. 이사](https://www.acmicpc.net/problem/17371)
 
 ```python
+import sys; input = sys.stdin.readline
 
+N = int(input())
+arr = [list(map(int, input().split())) for _ in range(N)]
+m = 800000001
+x, y = 0, 0
+print(arr)
+for x1, y1 in arr:
+    mx = 0
+    for x2, y2 in arr:
+        tmp = (x1-x2)**2+(y1-y2)**2
+        mx = max(mx, tmp)
+    if m > mx:
+        m = mx
+        x, y = x1, y1
+
+print(x, y)
 ```
 
 
