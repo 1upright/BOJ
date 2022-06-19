@@ -524,7 +524,27 @@ print(x, y)
 ## 15) [1086. 박성원](https://www.acmicpc.net/problem/1086)
 
 ```python
+# 인터넷 참고
+import sys; input = sys.stdin.readline
+import math
 
+N = int(input())
+arr = [int(input()) for _ in range(N)]
+K = int(input())
+r = [[(j*10**len(str(arr[i]))+arr[i])%K for j in range(K)] for i in range(N)]
+dp = [[0]*K for _ in range(1<<N)]
+dp[0][0] = 1
+
+for x in range(1<<N):
+    for i in range(N):
+        if not x&(1<<i):
+            for j in range(K):
+                dp[x|(1<<i)][r[i][j]] += dp[x][j]
+
+a = dp[(1<<N)-1][0]
+b = sum(dp[(1<<N)-1])
+g = math.gcd(a, b)
+print(f'{a//g}/{b//g}')
 ```
 
 
