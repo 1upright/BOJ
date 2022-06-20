@@ -552,7 +552,31 @@ print(f'{a//g}/{b//g}')
 ## 16) [1708. 볼록 껍질](https://www.acmicpc.net/problem/1708)
 
 ```python
+# 인터넷 검색 - Convex Hull 알고리즘
 
+import sys; input = sys.stdin.readline
+
+def convex_hull():
+    ch = []
+    for z in arr:
+        while len(ch) > 1:
+            x, y = ch[-2], ch[-1]
+            if ccw(x, y, z): break
+            ch.pop()
+        ch.append(z)
+    return len(ch)
+
+def ccw(x, y, z):
+    if (y[0]-x[0])*(z[1]-y[1])>(y[1]-x[1])*(z[0]-y[0]): return 1
+    return 0
+
+N = int(input())
+arr = sorted([list(map(int, input().split())) for _ in range(N)])
+
+res = convex_hull()-2
+arr.reverse()
+res += convex_hull()
+print(res)
 ```
 
 
