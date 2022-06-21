@@ -592,7 +592,35 @@ print(res)
 ## 18) [1786. 찾기](https://www.acmicpc.net/problem/1786)
 
 ```python
+def kmp(t, p):
+    N, M = len(t), len(p)
+    lps = [0]*(M+1)
+    lps[0] = -1
 
+    j = 0
+    for i in range(1, M):
+        while j > 0 and p[i] != p[j]:
+            j = lps[j]
+        if p[i] == p[j]:
+            j += 1
+            lps[i+1] = j
+
+    i = j = 0
+    while i < N and j <= M:
+        if j == -1 or t[i] == p[j]:
+            i += 1
+            j += 1
+        else:
+            j = lps[j]
+        if j == M:
+            res.append(i-M+1)
+            j = lps[j]
+
+T, P = input(), input()
+res = []
+kmp(T, P)
+print(len(res))
+print(*res)
 ```
 
 
