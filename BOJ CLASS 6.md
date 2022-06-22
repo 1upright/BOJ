@@ -628,7 +628,47 @@ print(*res)
 ## 19) [1948. 임계경로](https://www.acmicpc.net/problem/1948)
 
 ```python
+# 인터넷 참고
+import sys; input = sys.stdin.readline
+from collections import deque
 
+N = int(input())
+M = int(input())
+indegree = [0]*(N+1)
+graph = [[] for _ in range(N+1)]
+graph2 = [[] for _ in range(N+1)]
+
+for _ in range(M):
+    a, b, c = map(int, input().split())
+    graph[a].append((b, c))
+    graph2[b].append((a, c))
+    indegree[b] += 1
+
+s, e = map(int, input().split())
+q = deque([s])
+res = [0]*(N+1)
+while q:
+    x = q.popleft()
+    for y, t in graph[x]:
+        indegree[y] -= 1
+        res[y] = max(res[y], res[x]+t)
+        if not indegree[y]:
+            q.append(y)
+
+q = deque([e])
+cnt = 0
+visited = [0]*(N+1)
+while q:
+    y = q.popleft()
+    for x, t in graph2[y]:
+        if res[y] - res[x] == t:
+            cnt += 1
+            if not visited[x]:
+                visited[x] = 1
+                q.append(x)
+
+print(res[e])
+print(cnt)
 ```
 
 
