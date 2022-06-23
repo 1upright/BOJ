@@ -676,7 +676,50 @@ print(cnt)
 ## 20) [2150. Strongly Connected Component](https://www.acmicpc.net/problem/2150)
 
 ```python
+import sys; input = sys.stdin.readline
+sys.setrecursionlimit(10**6)
 
+def dfs(x):
+    visited[x] = 1
+    for y in graph[x]:
+        if not visited[y]:
+            dfs(y)
+    tmp.append(x)
+
+def dfs2(y):
+    visited[y] = 1
+    scc.append(y)
+    for x in graph2[y]:
+        if not visited[x]:
+            dfs2(x)
+
+V, E = map(int, input().split())
+graph = [[] for _ in range(V+1)]
+graph2 = [[] for _ in range(V+1)]
+for _ in range(E):
+    a, b = map(int, input().split())
+    graph[a].append(b)
+    graph2[b].append(a)
+
+visited = [0]*(V+1)
+tmp = []
+for i in range(1, V+1):
+    if not visited[i]:
+        dfs(i)
+
+visited = [0]*(V+1)
+res = []
+while tmp:
+    scc = []
+    y = tmp.pop()
+    if not visited[y]:
+        dfs2(y)
+        res.append(sorted(scc))
+
+res.sort()
+print(len(res))
+for scc in res:
+    print(*scc, -1)
 ```
 
 
