@@ -727,7 +727,37 @@ for scc in res:
 ## 21) [2243. 사탕상자](https://www.acmicpc.net/problem/2243)
 
 ```python
+import sys; input = sys.stdin.readline
 
+def find(start, end, node, x):
+    if start == end:
+        tree[node] -= 1
+        return start
+
+    mid = (start + end) // 2
+    y = find(start, mid, node*2, x) if tree[node*2] >= x else find(mid+1, end, node*2+1, x-tree[node*2])
+    tree[node] = tree[node*2] + tree[node*2+1]
+    return y
+
+def update(start, end, node, x, ea):
+    if start == end == x:
+        tree[node] += ea
+        return
+    if start <= x <= end:
+        mid = (start+end)//2
+        update(start, mid, node*2, x, ea)
+        update(mid+1, end, node*2+1, x, ea)
+        tree[node] = tree[node*2] + tree[node*2+1]
+
+N = int(input())
+M = 1000000
+tree = [0]*(M*4)
+for _ in range(N):
+    data = list(map(int, input().split()))
+    if data[0] == 1:
+        print(find(1, M, 1, data[1]))
+    elif data[0] == 2:
+        update(1, M, 1, data[1], data[2])
 ```
 
 
